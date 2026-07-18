@@ -1,0 +1,198 @@
+<%- include('../partials/header') %>
+
+<!-- Admin Dashboard Section -->
+<section class="admin-dashboard-section py-5">
+  <div class="container py-5">
+    <div class="row mb-4">
+      <div class="col-12">
+        <h1 class="display-5 fw-bold"><i class="fas fa-shield-alt me-3 text-danger"></i>Admin Dashboard</h1>
+        <p class="lead text-muted">Manage users, donors, and blood requests</p>
+      </div>
+    </div>
+
+    <!-- Flash Messages -->
+    <% if (error && error.length > 0) { %>
+      <div class="col-12 mb-4">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="fas fa-exclamation-circle me-2"></i>
+          <%= error %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if (success && success.length > 0) { %>
+      <div class="col-12 mb-4">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="fas fa-check-circle me-2"></i>
+          <%= success %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-5">
+      <div class="col-lg-3 col-md-6">
+        <div class="stat-card bg-white rounded shadow p-4">
+          <div class="d-flex align-items-center">
+            <div class="icon-box bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+              <i class="fas fa-users fa-2x"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-1">Total Users</h5>
+              <p class="display-4 fw-bold text-primary mb-0"><%= stats.totalUsers %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="stat-card bg-white rounded shadow p-4">
+          <div class="d-flex align-items-center">
+            <div class="icon-box bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+              <i class="fas fa-tint fa-2x"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-1">Total Donors</h5>
+              <p class="display-4 fw-bold text-danger mb-0"><%= stats.totalDonors %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="stat-card bg-white rounded shadow p-4">
+          <div class="d-flex align-items-center">
+            <div class="icon-box bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+              <i class="fas fa-hand-holding-heart fa-2x"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-1">Blood Requests</h5>
+              <p class="display-4 fw-bold text-warning mb-0"><%= stats.totalBloodRequests %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6">
+        <div class="stat-card bg-white rounded shadow p-4">
+          <div class="d-flex align-items-center">
+            <div class="icon-box bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+              <i class="fas fa-clock fa-2x"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-1">Pending</h5>
+              <p class="display-4 fw-bold text-success mb-0"><%= stats.pendingRequests %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="actions-card bg-white rounded shadow p-4">
+          <h4 class="fw-bold mb-4">Quick Actions</h4>
+          <div class="row g-3">
+            <div class="col-md-3">
+              <a href="/admin/users" class="btn btn-outline-primary w-100 py-3 fw-bold">
+                <i class="fas fa-users-cog me-2"></i>Manage Users
+              </a>
+            </div>
+            <div class="col-md-3">
+              <a href="/admin/donors" class="btn btn-outline-danger w-100 py-3 fw-bold">
+                <i class="fas fa-tint me-2"></i>Manage Donors
+              </a>
+            </div>
+            <div class="col-md-3">
+              <a href="/admin/requests" class="btn btn-outline-warning w-100 py-3 fw-bold">
+                <i class="fas fa-clipboard-list me-2"></i>Manage Requests
+              </a>
+            </div>
+            <div class="col-md-3">
+              <a href="/dashboard" class="btn btn-outline-secondary w-100 py-3 fw-bold">
+                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row g-4">
+      <!-- Recent Users -->
+      <div class="col-lg-4">
+        <div class="recent-card bg-white rounded shadow p-4">
+          <h5 class="fw-bold mb-4"><i class="fas fa-users me-2 text-primary"></i>Recent Users</h5>
+          <% if (recentUsers.length > 0) { %>
+            <div class="list-group list-group-flush">
+              <% recentUsers.forEach(function(user) { %>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong><%= user.fullName %></strong>
+                    <br>
+                    <small class="text-muted"><%= user.email %></small>
+                  </div>
+                  <small class="text-muted"><%= user.createdAt.toLocaleDateString() %></small>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <p class="text-muted text-center py-3">No users registered yet</p>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Recent Donors -->
+      <div class="col-lg-4">
+        <div class="recent-card bg-white rounded shadow p-4">
+          <h5 class="fw-bold mb-4"><i class="fas fa-tint me-2 text-danger"></i>Recent Donors</h5>
+          <% if (recentDonors.length > 0) { %>
+            <div class="list-group list-group-flush">
+              <% recentDonors.forEach(function(donor) { %>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong><%= donor.fullName %></strong>
+                    <br>
+                    <small class="text-muted"><span class="badge bg-danger"><%= donor.bloodGroup %></span></small>
+                  </div>
+                  <small class="text-muted"><%= donor.createdAt.toLocaleDateString() %></small>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <p class="text-muted text-center py-3">No donors registered yet</p>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Recent Requests -->
+      <div class="col-lg-4">
+        <div class="recent-card bg-white rounded shadow p-4">
+          <h5 class="fw-bold mb-4"><i class="fas fa-hand-holding-heart me-2 text-warning"></i>Recent Requests</h5>
+          <% if (recentRequests.length > 0) { %>
+            <div class="list-group list-group-flush">
+              <% recentRequests.forEach(function(request) { %>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong><%= request.patientName %></strong>
+                    <br>
+                    <small class="text-muted"><span class="badge bg-danger"><%= request.bloodGroupRequired %></span></small>
+                  </div>
+                  <span class="badge <%= request.status === 'Pending' ? 'bg-warning' : request.status === 'Approved' ? 'bg-success' : 'bg-secondary' %>"><%= request.status %></span>
+                </div>
+              <% }); %>
+            </div>
+          <% } else { %>
+            <p class="text-muted text-center py-3">No blood requests yet</p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

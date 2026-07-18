@@ -1,0 +1,116 @@
+<%- include('partials/header') %>
+
+<!-- Login Section -->
+<section class="auth-section py-5">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="auth-card bg-white rounded shadow-lg p-5">
+          <div class="text-center mb-5">
+            <i class="fas fa-sign-in-alt fa-4x text-danger mb-3"></i>
+            <h2 class="display-5 fw-bold">Login</h2>
+            <p class="lead">Welcome back to Blood Donor Finder</p>
+          </div>
+
+          <!-- Flash Messages -->
+          <% if (error && error.length > 0) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <i class="fas fa-exclamation-circle me-2"></i>
+              <%= error %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+
+          <% if (success && success.length > 0) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <i class="fas fa-check-circle me-2"></i>
+              <%= success %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+
+          <!-- Login Form -->
+          <form action="/login" method="POST" id="loginForm">
+            <!-- Email -->
+            <div class="mb-4">
+              <label for="email" class="form-label fw-bold">
+                <i class="fas fa-envelope me-2 text-danger"></i>Email
+              </label>
+              <input type="email" 
+                     class="form-control form-control-lg" 
+                     id="email" 
+                     name="email" 
+                     placeholder="Enter your email"
+                     required>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-4">
+              <label for="password" class="form-label fw-bold">
+                <i class="fas fa-lock me-2 text-danger"></i>Password
+              </label>
+              <input type="password" 
+                     class="form-control form-control-lg" 
+                     id="password" 
+                     name="password" 
+                     placeholder="Enter your password"
+                     required>
+            </div>
+
+            <!-- Remember Me -->
+            <div class="mb-4 form-check">
+              <input type="checkbox" class="form-check-input" id="rememberMe">
+              <label class="form-check-label" for="rememberMe">
+                Remember me
+              </label>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center mt-5">
+              <button type="submit" class="btn btn-danger btn-lg px-5 py-3 fw-bold w-100">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+              </button>
+            </div>
+          </form>
+
+          <!-- Register Link -->
+          <div class="text-center mt-4">
+            <p class="mb-0">Don't have an account? 
+              <a href="/register" class="text-danger fw-bold text-decoration-none">Register here</a>
+            </p>
+          </div>
+
+          <!-- Forgot Password Link -->
+          <div class="text-center mt-2">
+            <a href="#" class="text-muted text-decoration-none">Forgot password?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+
+<script>
+// Client-side form validation
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  
+  // Email validation
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  if (!emailRegex.test(email)) {
+    e.preventDefault();
+    alert('Please enter a valid email address!');
+    return false;
+  }
+  
+  // Password validation
+  if (!password) {
+    e.preventDefault();
+    alert('Please enter your password!');
+    return false;
+  }
+});
+</script>

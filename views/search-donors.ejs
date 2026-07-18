@@ -1,0 +1,144 @@
+<%- include('partials/header') %>
+
+<!-- Search Donors Section -->
+<section class="search-section py-5">
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <i class="fas fa-search fa-4x text-danger mb-3"></i>
+      <h2 class="display-5 fw-bold">Search Blood Donors</h2>
+      <p class="lead">Find available blood donors in your area</p>
+    </div>
+
+    <!-- Flash Messages -->
+    <% if (error && error.length > 0) { %>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <%= error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% } %>
+
+    <% if (success && success.length > 0) { %>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <%= success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% } %>
+
+    <!-- Search Form -->
+    <div class="search-form-card bg-white rounded shadow-lg p-4 mb-5">
+      <form action="/search-donors" method="GET" class="row g-3">
+        <div class="col-md-4">
+          <label for="bloodGroup" class="form-label fw-bold">Blood Group</label>
+          <select class="form-select form-select-lg" id="bloodGroup" name="bloodGroup">
+            <option value="">All Blood Groups</option>
+            <option value="A+" <%= searchParams.bloodGroup === 'A+' ? 'selected' : '' %>>A+</option>
+            <option value="A-" <%= searchParams.bloodGroup === 'A-' ? 'selected' : '' %>>A-</option>
+            <option value="B+" <%= searchParams.bloodGroup === 'B+' ? 'selected' : '' %>>B+</option>
+            <option value="B-" <%= searchParams.bloodGroup === 'B-' ? 'selected' : '' %>>B-</option>
+            <option value="AB+" <%= searchParams.bloodGroup === 'AB+' ? 'selected' : '' %>>AB+</option>
+            <option value="AB-" <%= searchParams.bloodGroup === 'AB-' ? 'selected' : '' %>>AB-</option>
+            <option value="O+" <%= searchParams.bloodGroup === 'O+' ? 'selected' : '' %>>O+</option>
+            <option value="O-" <%= searchParams.bloodGroup === 'O-' ? 'selected' : '' %>>O-</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="city" class="form-label fw-bold">City</label>
+          <input type="text" class="form-control form-control-lg" id="city" name="city" 
+                 placeholder="Enter city name" value="<%= searchParams.city || '' %>">
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button type="submit" class="btn btn-danger btn-lg w-100 fw-bold">
+            <i class="fas fa-search me-2"></i>Search Donors
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Search Results -->
+    <div class="search-results">
+      <% if (donors.length > 0) { %>
+        <div class="row g-4">
+          <% donors.forEach(function(donor) { %>
+            <div class="col-lg-4 col-md-6">
+              <div class="donor-card bg-white rounded shadow p-4 h-100">
+                <div class="text-center mb-3">
+                  <div class="donor-avatar bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 80px; height: 80px;">
+                    <i class="fas fa-user fa-2x"></i>
+                  </div>
+                  <h4 class="fw-bold mb-1"><%= donor.fullName %></h4>
+                  <span class="badge bg-success fs-6"><%= donor.availabilityStatus %></span>
+                </div>
+                
+                <hr>
+                
+                <div class="donor-info">
+                  <div class="mb-2">
+                    <i class="fas fa-tint text-danger me-2"></i>
+                    <strong>Blood Group:</strong>
+                    <span class="badge bg-danger fs-6"><%= donor.bloodGroup %></span>
+                  </div>
+                  <div class="mb-2">
+                    <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                    <strong>City:</strong> <%= donor.city %>
+                  </div>
+                  <div class="mb-2">
+                    <i class="fas fa-phone text-danger me-2"></i>
+                    <strong>Contact:</strong> <%= donor.contactNumber %>
+                  </div>
+                  <div class="mb-2">
+                    <i class="fas fa-venus-mars text-danger me-2"></i>
+                    <strong>Gender:</strong> <%= donor.gender %>
+                  </div>
+                  <div class="mb-2">
+                    <i class="fas fa-calendar text-danger me-2"></i>
+                    <strong>Age:</strong> <%= donor.age %>
+                  </div>
+                  <% if (donor.lastDonationDate) { %>
+                    <div class="mb-0">
+                      <i class="fas fa-calendar-alt text-danger me-2"></i>
+                      <strong>Last Donation:</strong> <%= donor.lastDonationDate.toLocaleDateString() %>
+                    </div>
+                  <% } else { %>
+                    <div class="mb-0">
+                      <i class="fas fa-calendar-alt text-danger me-2"></i>
+                      <strong>Last Donation:</strong> Not donated yet
+                    </div>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+        
+        <div class="text-center mt-4">
+          <p class="text-muted"><i class="fas fa-info-circle me-2"></i>Found <%= donors.length %> donor(s)</p>
+        </div>
+      <% } else { %>
+        <div class="no-results text-center py-5">
+          <i class="fas fa-search fa-5x text-muted mb-4"></i>
+          <h3 class="fw-bold mb-3">No Donors Found</h3>
+          <p class="lead text-muted">
+            <% if (searchParams.bloodGroup || searchParams.city) { %>
+              We couldn't find any donors matching your search criteria. Try different filters or check back later.
+            <% } else { %>
+              No donors are currently registered. Be the first to become a donor!
+            <% } %>
+          </p>
+          <% if (!user) { %>
+            <a href="/register" class="btn btn-danger btn-lg px-5 py-3 fw-bold mt-3">
+              <i class="fas fa-user-plus me-2"></i>Register as Donor
+            </a>
+          <% } else { %>
+            <a href="/become-donor" class="btn btn-danger btn-lg px-5 py-3 fw-bold mt-3">
+              <i class="fas fa-tint me-2"></i>Become a Donor
+            </a>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

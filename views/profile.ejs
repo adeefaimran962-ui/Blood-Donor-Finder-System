@@ -1,0 +1,139 @@
+<%- include('partials/header') %>
+
+<!-- Profile Section -->
+<section class="auth-section py-5">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="auth-card bg-white rounded shadow-lg p-5">
+          <div class="text-center mb-5">
+            <i class="fas fa-user-circle fa-4x text-danger mb-3"></i>
+            <h2 class="display-5 fw-bold">My Profile</h2>
+            <p class="lead">View and update your profile information</p>
+          </div>
+
+          <!-- Flash Messages -->
+          <% if (error && error.length > 0) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <i class="fas fa-exclamation-circle me-2"></i>
+              <%= error %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+
+          <% if (success && success.length > 0) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <i class="fas fa-check-circle me-2"></i>
+              <%= success %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+
+          <!-- Profile Form -->
+          <form action="/profile" method="POST">
+            <div class="row">
+              <!-- Full Name -->
+              <div class="col-md-6 mb-4">
+                <label for="fullName" class="form-label fw-bold">
+                  <i class="fas fa-user me-2 text-danger"></i>Full Name
+                </label>
+                <input type="text" 
+                       class="form-control form-control-lg" 
+                       id="fullName" 
+                       name="fullName" 
+                       required
+                       maxlength="50"
+                       value="<%= user.fullName %>">
+              </div>
+
+              <!-- Phone -->
+              <div class="col-md-6 mb-4">
+                <label for="phone" class="form-label fw-bold">
+                  <i class="fas fa-phone me-2 text-danger"></i>Phone
+                </label>
+                <input type="tel" 
+                       class="form-control form-control-lg" 
+                       id="phone" 
+                       name="phone" 
+                       required
+                       pattern="[0-9]{10,15}"
+                       value="<%= user.phone %>">
+              </div>
+
+              <!-- City -->
+              <div class="col-md-6 mb-4">
+                <label for="city" class="form-label fw-bold">
+                  <i class="fas fa-map-marker-alt me-2 text-danger"></i>City
+                </label>
+                <input type="text" 
+                       class="form-control form-control-lg" 
+                       id="city" 
+                       name="city" 
+                       required
+                       maxlength="50"
+                       value="<%= user.city %>">
+              </div>
+
+              <!-- Blood Group -->
+              <div class="col-md-6 mb-4">
+                <label for="bloodGroup" class="form-label fw-bold">
+                  <i class="fas fa-tint me-2 text-danger"></i>Blood Group
+                </label>
+                <select class="form-select form-select-lg" 
+                        id="bloodGroup" 
+                        name="bloodGroup" 
+                        required>
+                  <option value="A+" <%= user.bloodGroup === 'A+' ? 'selected' : '' %>>A+</option>
+                  <option value="A-" <%= user.bloodGroup === 'A-' ? 'selected' : '' %>>A-</option>
+                  <option value="B+" <%= user.bloodGroup === 'B+' ? 'selected' : '' %>>B+</option>
+                  <option value="B-" <%= user.bloodGroup === 'B-' ? 'selected' : '' %>>B-</option>
+                  <option value="AB+" <%= user.bloodGroup === 'AB+' ? 'selected' : '' %>>AB+</option>
+                  <option value="AB-" <%= user.bloodGroup === 'AB-' ? 'selected' : '' %>>AB-</option>
+                  <option value="O+" <%= user.bloodGroup === 'O+' ? 'selected' : '' %>>O+</option>
+                  <option value="O-" <%= user.bloodGroup === 'O-' ? 'selected' : '' %>>O-</option>
+                </select>
+              </div>
+
+              <!-- Email (Read Only) -->
+              <div class="col-12 mb-4">
+                <label for="email" class="form-label fw-bold">
+                  <i class="fas fa-envelope me-2 text-danger"></i>Email
+                </label>
+                <input type="email" 
+                       class="form-control form-control-lg" 
+                       id="email" 
+                       value="<%= user.email %>"
+                       readonly
+                       style="background-color: #f8f9fa;">
+                <div class="form-text">Email cannot be changed</div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center mt-5">
+              <button type="submit" class="btn btn-danger btn-lg px-5 py-3 fw-bold">
+                <i class="fas fa-save me-2"></i>Update Profile
+              </button>
+            </div>
+          </form>
+
+          <!-- Change Password Link -->
+          <div class="text-center mt-4">
+            <a href="/change-password" class="text-danger fw-bold text-decoration-none">
+              <i class="fas fa-key me-2"></i>Change Password
+            </a>
+          </div>
+
+          <!-- Back to Dashboard -->
+          <div class="text-center mt-3">
+            <a href="/dashboard" class="text-muted text-decoration-none">
+              <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

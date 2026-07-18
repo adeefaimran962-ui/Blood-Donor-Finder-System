@@ -1,0 +1,119 @@
+<%- include('partials/header') %>
+
+<!-- My Requests Section -->
+<section class="dashboard-section py-5">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-12 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="display-5 fw-bold">My Blood Requests</h1>
+            <p class="lead text-muted">View and manage your blood requests</p>
+          </div>
+          <a href="/blood-request" class="btn btn-danger btn-lg">
+            <i class="fas fa-plus me-2"></i>New Request
+          </a>
+        </div>
+      </div>
+
+      <!-- Flash Messages -->
+      <% if (error && error.length > 0) { %>
+        <div class="col-12 mb-4">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (success && success.length > 0) { %>
+        <div class="col-12 mb-4">
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <%= success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- Requests List -->
+      <div class="col-12">
+        <% if (requests.length > 0) { %>
+          <div class="row g-4">
+            <% requests.forEach(function(request) { %>
+              <div class="col-lg-6">
+                <div class="request-card bg-white rounded shadow p-4">
+                  <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                      <h4 class="fw-bold mb-1"><%= request.patientName %></h4>
+                      <span class="badge <%= request.status === 'Pending' ? 'bg-warning' : request.status === 'Fulfilled' ? 'bg-success' : 'bg-secondary' %> fs-6">
+                        <%= request.status %>
+                      </span>
+                    </div>
+                    <small class="text-muted">
+                      <%= request.createdAt.toLocaleDateString() %>
+                    </small>
+                  </div>
+                  
+                  <hr>
+                  
+                  <div class="request-details">
+                    <div class="mb-2">
+                      <i class="fas fa-tint text-danger me-2"></i>
+                      <strong>Blood Group:</strong>
+                      <span class="badge bg-danger fs-6"><%= request.bloodGroupRequired %></span>
+                    </div>
+                    <div class="mb-2">
+                      <i class="fas fa-hospital text-danger me-2"></i>
+                      <strong>Hospital:</strong> <%= request.hospitalName %>
+                    </div>
+                    <div class="mb-2">
+                      <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                      <strong>City:</strong> <%= request.city %>
+                    </div>
+                    <div class="mb-2">
+                      <i class="fas fa-calendar-alt text-danger me-2"></i>
+                      <strong>Required Date:</strong> <%= request.requiredDate.toLocaleDateString() %>
+                    </div>
+                    <div class="mb-2">
+                      <i class="fas fa-phone text-danger me-2"></i>
+                      <strong>Contact:</strong> <%= request.contactNumber %>
+                    </div>
+                    <% if (request.additionalNotes) { %>
+                      <div class="mb-0">
+                        <i class="fas fa-sticky-note text-danger me-2"></i>
+                        <strong>Notes:</strong> <%= request.additionalNotes %>
+                      </div>
+                    <% } %>
+                  </div>
+                  
+                  <hr>
+                  
+                  <div class="request-actions">
+                    <form action="/blood-request/<%= request._id %>/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this request?');">
+                      <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="fas fa-trash me-2"></i>Delete Request
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="no-requests text-center py-5">
+            <i class="fas fa-file-medical-alt fa-5x text-muted mb-4"></i>
+            <h3 class="fw-bold mb-3">No Blood Requests Yet</h3>
+            <p class="lead text-muted">You haven't submitted any blood requests yet.</p>
+            <a href="/blood-request" class="btn btn-danger btn-lg px-5 py-3 fw-bold mt-3">
+              <i class="fas fa-plus me-2"></i>Create Your First Request
+            </a>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

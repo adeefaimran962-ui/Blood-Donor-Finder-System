@@ -1,0 +1,217 @@
+<%- include('partials/header') %>
+
+<!-- Become Donor Section -->
+<section class="auth-section py-5">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="auth-card bg-white rounded shadow-lg p-5">
+          <div class="text-center mb-5">
+            <i class="fas fa-tint fa-4x text-danger mb-3"></i>
+            <h2 class="display-5 fw-bold"><%= donor ? 'Update Donor Profile' : 'Become a Donor' %></h2>
+            <p class="lead"><%= donor ? 'Update your donor information' : 'Join our community of life-savers' %></p>
+          </div>
+
+          <!-- Flash Messages -->
+          <% if (error && error.length > 0) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <i class="fas fa-exclamation-circle me-2"></i>
+              <%= error %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+
+          <% if (success && success.length > 0) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <i class="fas fa-check-circle me-2"></i>
+              <%= success %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+
+          <!-- Donor Form -->
+          <form action="/become-donor" method="POST" id="donorForm">
+            <div class="row">
+              <!-- Full Name -->
+              <div class="col-md-6 mb-4">
+                <label for="fullName" class="form-label fw-bold">
+                  <i class="fas fa-user me-2 text-danger"></i>Full Name
+                </label>
+                <input type="text" 
+                       class="form-control form-control-lg" 
+                       id="fullName" 
+                       name="fullName" 
+                       placeholder="Enter your full name"
+                       required
+                       maxlength="50"
+                       value="<%= donor ? donor.fullName : '' %>">
+              </div>
+
+              <!-- Age -->
+              <div class="col-md-6 mb-4">
+                <label for="age" class="form-label fw-bold">
+                  <i class="fas fa-calendar me-2 text-danger"></i>Age
+                </label>
+                <input type="number" 
+                       class="form-control form-control-lg" 
+                       id="age" 
+                       name="age" 
+                       placeholder="Enter your age"
+                       required
+                       min="18"
+                       max="65"
+                       value="<%= donor ? donor.age : '' %>">
+                <div class="form-text">Age must be between 18 and 65</div>
+              </div>
+
+              <!-- Gender -->
+              <div class="col-md-6 mb-4">
+                <label for="gender" class="form-label fw-bold">
+                  <i class="fas fa-venus-mars me-2 text-danger"></i>Gender
+                </label>
+                <select class="form-select form-select-lg" 
+                        id="gender" 
+                        name="gender" 
+                        required>
+                  <option value="">Select gender</option>
+                  <option value="Male" <%= donor && donor.gender === 'Male' ? 'selected' : '' %>>Male</option>
+                  <option value="Female" <%= donor && donor.gender === 'Female' ? 'selected' : '' %>>Female</option>
+                  <option value="Other" <%= donor && donor.gender === 'Other' ? 'selected' : '' %>>Other</option>
+                </select>
+              </div>
+
+              <!-- Blood Group -->
+              <div class="col-md-6 mb-4">
+                <label for="bloodGroup" class="form-label fw-bold">
+                  <i class="fas fa-tint me-2 text-danger"></i>Blood Group
+                </label>
+                <select class="form-select form-select-lg" 
+                        id="bloodGroup" 
+                        name="bloodGroup" 
+                        required>
+                  <option value="">Select your blood group</option>
+                  <option value="A+" <%= donor && donor.bloodGroup === 'A+' ? 'selected' : '' %>>A+</option>
+                  <option value="A-" <%= donor && donor.bloodGroup === 'A-' ? 'selected' : '' %>>A-</option>
+                  <option value="B+" <%= donor && donor.bloodGroup === 'B+' ? 'selected' : '' %>>B+</option>
+                  <option value="B-" <%= donor && donor.bloodGroup === 'B-' ? 'selected' : '' %>>B-</option>
+                  <option value="AB+" <%= donor && donor.bloodGroup === 'AB+' ? 'selected' : '' %>>AB+</option>
+                  <option value="AB-" <%= donor && donor.bloodGroup === 'AB-' ? 'selected' : '' %>>AB-</option>
+                  <option value="O+" <%= donor && donor.bloodGroup === 'O+' ? 'selected' : '' %>>O+</option>
+                  <option value="O-" <%= donor && donor.bloodGroup === 'O-' ? 'selected' : '' %>>O-</option>
+                </select>
+              </div>
+
+              <!-- City -->
+              <div class="col-md-6 mb-4">
+                <label for="city" class="form-label fw-bold">
+                  <i class="fas fa-map-marker-alt me-2 text-danger"></i>City
+                </label>
+                <input type="text" 
+                       class="form-control form-control-lg" 
+                       id="city" 
+                       name="city" 
+                       placeholder="Enter your city"
+                       required
+                       maxlength="50"
+                       value="<%= donor ? donor.city : '' %>">
+              </div>
+
+              <!-- Contact Number -->
+              <div class="col-md-6 mb-4">
+                <label for="contactNumber" class="form-label fw-bold">
+                  <i class="fas fa-phone me-2 text-danger"></i>Contact Number
+                </label>
+                <input type="tel" 
+                       class="form-control form-control-lg" 
+                       id="contactNumber" 
+                       name="contactNumber" 
+                       placeholder="Enter your contact number"
+                       required
+                       pattern="[0-9]{10,15}"
+                       title="Please enter a valid phone number (10-15 digits)"
+                       value="<%= donor ? donor.contactNumber : '' %>">
+              </div>
+
+              <!-- Last Donation Date -->
+              <div class="col-md-6 mb-4">
+                <label for="lastDonationDate" class="form-label fw-bold">
+                  <i class="fas fa-calendar-alt me-2 text-danger"></i>Last Donation Date
+                </label>
+                <input type="date" 
+                       class="form-control form-control-lg" 
+                       id="lastDonationDate" 
+                       name="lastDonationDate"
+                       value="<%= donor && donor.lastDonationDate ? donor.lastDonationDate.toISOString().split('T')[0] : '' %>">
+                <div class="form-text">Leave blank if you haven't donated before</div>
+              </div>
+
+              <!-- Availability Status -->
+              <div class="col-md-6 mb-4">
+                <label for="availabilityStatus" class="form-label fw-bold">
+                  <i class="fas fa-check-circle me-2 text-danger"></i>Availability Status
+                </label>
+                <select class="form-select form-select-lg" 
+                        id="availabilityStatus" 
+                        name="availabilityStatus" 
+                        required>
+                  <option value="Available" <%= donor && donor.availabilityStatus === 'Available' ? 'selected' : '' %>>Available</option>
+                  <option value="Not Available" <%= donor && donor.availabilityStatus === 'Not Available' ? 'selected' : '' %>>Not Available</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center mt-5">
+              <button type="submit" class="btn btn-danger btn-lg px-5 py-3 fw-bold">
+                <i class="fas fa-save me-2"></i><%= donor ? 'Update Profile' : 'Register as Donor' %>
+              </button>
+            </div>
+
+            <% if (donor) { %>
+            <!-- Delete Profile Button -->
+            <div class="text-center mt-3">
+              <form action="/donor-profile/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete your donor profile?');">
+                <button type="submit" class="btn btn-outline-danger">
+                  <i class="fas fa-trash me-2"></i>Delete Profile
+                </button>
+              </form>
+            </div>
+            <% } %>
+          </form>
+
+          <!-- Back to Dashboard -->
+          <div class="text-center mt-4">
+            <a href="/dashboard" class="text-danger fw-bold text-decoration-none">
+              <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+
+<script>
+// Client-side form validation
+document.getElementById('donorForm').addEventListener('submit', function(e) {
+  const age = parseInt(document.getElementById('age').value);
+  const contactNumber = document.getElementById('contactNumber').value;
+  
+  // Age validation
+  if (isNaN(age) || age < 18 || age > 65) {
+    e.preventDefault();
+    alert('Age must be between 18 and 65');
+    return false;
+  }
+  
+  // Contact number validation
+  const phoneRegex = /^[0-9]{10,15}$/;
+  if (!phoneRegex.test(contactNumber)) {
+    e.preventDefault();
+    alert('Please enter a valid contact number (10-15 digits)');
+    return false;
+  }
+});
+</script>

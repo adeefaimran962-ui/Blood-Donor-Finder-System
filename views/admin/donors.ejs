@@ -1,0 +1,103 @@
+<%- include('../partials/header') %>
+
+<!-- Admin Donors Management Section -->
+<section class="admin-dashboard-section py-5">
+  <div class="container py-5">
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="display-5 fw-bold"><i class="fas fa-tint me-3 text-danger"></i>Manage Donors</h1>
+            <p class="lead text-muted">View and manage all registered blood donors</p>
+          </div>
+          <a href="/admin/dashboard" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flash Messages -->
+    <% if (error && error.length > 0) { %>
+      <div class="col-12 mb-4">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="fas fa-exclamation-circle me-2"></i>
+          <%= error %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if (success && success.length > 0) { %>
+      <div class="col-12 mb-4">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="fas fa-check-circle me-2"></i>
+          <%= success %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Donors Table -->
+    <div class="row">
+      <div class="col-12">
+        <div class="table-card bg-white rounded shadow p-4">
+          <% if (donors.length > 0) { %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Blood Group</th>
+                    <th>City</th>
+                    <th>Contact</th>
+                    <th>Availability</th>
+                    <th>Registered</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% donors.forEach(function(donor) { %>
+                    <tr>
+                      <td><%= donor.fullName %></td>
+                      <td><%= donor.age %></td>
+                      <td><%= donor.gender %></td>
+                      <td><span class="badge bg-danger"><%= donor.bloodGroup %></span></td>
+                      <td><%= donor.city %></td>
+                      <td><%= donor.contactNumber %></td>
+                      <td>
+                        <% if (donor.availabilityStatus === 'Available') { %>
+                          <span class="badge bg-success">Available</span>
+                        <% } else { %>
+                          <span class="badge bg-secondary">Not Available</span>
+                        <% } %>
+                      </td>
+                      <td><%= donor.createdAt.toLocaleDateString() %></td>
+                      <td>
+                        <form action="/admin/donors/<%= donor._id %>/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this donor profile?');">
+                          <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Donor">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          <% } else { %>
+            <div class="text-center py-5">
+              <i class="fas fa-tint fa-5x text-muted mb-4"></i>
+              <h4 class="fw-bold">No Donors Found</h4>
+              <p class="text-muted">There are no registered blood donors in the system yet.</p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

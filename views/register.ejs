@@ -1,0 +1,182 @@
+<%- include('partials/header') %>
+
+<!-- Register Section -->
+<section class="auth-section py-5">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="auth-card bg-white rounded shadow-lg p-5">
+          <div class="text-center mb-5">
+            <i class="fas fa-user-plus fa-4x text-danger mb-3"></i>
+            <h2 class="display-5 fw-bold">Register as Donor</h2>
+            <p class="lead">Join our community and save lives</p>
+          </div>
+
+          <!-- Flash Messages -->
+          <% if (error && error.length > 0) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <i class="fas fa-exclamation-circle me-2"></i>
+              <%= error %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+
+          <% if (success && success.length > 0) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <i class="fas fa-check-circle me-2"></i>
+              <%= success %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
+
+          <!-- Registration Form -->
+          <form action="/register" method="POST" id="registerForm">
+            <div class="row">
+              <!-- Full Name -->
+              <div class="col-md-6 mb-4">
+                <label for="fullName" class="form-label fw-bold">
+                  <i class="fas fa-user me-2 text-danger"></i>Full Name
+                </label>
+                <input type="text" 
+                       class="form-control form-control-lg" 
+                       id="fullName" 
+                       name="fullName" 
+                       placeholder="Enter your full name"
+                       required
+                       maxlength="50">
+              </div>
+
+              <!-- Email -->
+              <div class="col-md-6 mb-4">
+                <label for="email" class="form-label fw-bold">
+                  <i class="fas fa-envelope me-2 text-danger"></i>Email
+                </label>
+                <input type="email" 
+                       class="form-control form-control-lg" 
+                       id="email" 
+                       name="email" 
+                       placeholder="Enter your email"
+                       required>
+              </div>
+
+              <!-- Phone -->
+              <div class="col-md-6 mb-4">
+                <label for="phone" class="form-label fw-bold">
+                  <i class="fas fa-phone me-2 text-danger"></i>Phone Number
+                </label>
+                <input type="tel" 
+                       class="form-control form-control-lg" 
+                       id="phone" 
+                       name="phone" 
+                       placeholder="Enter your phone number"
+                       required
+                       pattern="[0-9]{10,15}"
+                       title="Please enter a valid phone number (10-15 digits)">
+              </div>
+
+              <!-- City -->
+              <div class="col-md-6 mb-4">
+                <label for="city" class="form-label fw-bold">
+                  <i class="fas fa-map-marker-alt me-2 text-danger"></i>City
+                </label>
+                <input type="text" 
+                       class="form-control form-control-lg" 
+                       id="city" 
+                       name="city" 
+                       placeholder="Enter your city"
+                       required
+                       maxlength="50">
+              </div>
+
+              <!-- Blood Group -->
+              <div class="col-md-12 mb-4">
+                <label for="bloodGroup" class="form-label fw-bold">
+                  <i class="fas fa-tint me-2 text-danger"></i>Blood Group
+                </label>
+                <select class="form-select form-select-lg" 
+                        id="bloodGroup" 
+                        name="bloodGroup" 
+                        required>
+                  <option value="">Select your blood group</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              </div>
+
+              <!-- Password -->
+              <div class="col-md-6 mb-4">
+                <label for="password" class="form-label fw-bold">
+                  <i class="fas fa-lock me-2 text-danger"></i>Password
+                </label>
+                <input type="password" 
+                       class="form-control form-control-lg" 
+                       id="password" 
+                       name="password" 
+                       placeholder="Create a password"
+                       required
+                       minlength="8">
+                <div class="form-text">Password must be at least 8 characters</div>
+              </div>
+
+              <!-- Confirm Password -->
+              <div class="col-md-6 mb-4">
+                <label for="confirmPassword" class="form-label fw-bold">
+                  <i class="fas fa-lock me-2 text-danger"></i>Confirm Password
+                </label>
+                <input type="password" 
+                       class="form-control form-control-lg" 
+                       id="confirmPassword" 
+                       name="confirmPassword" 
+                       placeholder="Confirm your password"
+                       required
+                       minlength="8">
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center mt-5">
+              <button type="submit" class="btn btn-danger btn-lg px-5 py-3 fw-bold">
+                <i class="fas fa-user-plus me-2"></i>Register Now
+              </button>
+            </div>
+          </form>
+
+          <!-- Login Link -->
+          <div class="text-center mt-4">
+            <p class="mb-0">Already have an account? 
+              <a href="/login" class="text-danger fw-bold text-decoration-none">Login here</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+
+<script>
+// Client-side form validation
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  
+  if (password !== confirmPassword) {
+    e.preventDefault();
+    alert('Passwords do not match!');
+    return false;
+  }
+  
+  if (password.length < 8) {
+    e.preventDefault();
+    alert('Password must be at least 8 characters!');
+    return false;
+  }
+});
+</script>

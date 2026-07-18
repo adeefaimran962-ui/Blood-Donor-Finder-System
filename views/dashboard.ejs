@@ -1,0 +1,205 @@
+<%- include('partials/header') %>
+
+<!-- Dashboard Section -->
+<section class="dashboard-section py-5">
+  <div class="container py-5">
+    <div class="row">
+      <!-- Welcome Card -->
+      <div class="col-12 mb-5">
+        <div class="welcome-card bg-danger text-white rounded shadow-lg p-5">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h1 class="display-4 fw-bold mb-3">
+                Welcome, <%= user.fullName %>!
+              </h1>
+              <p class="lead mb-0">
+                Thank you for being a part of Blood Donor Finder System. Your contribution can save lives.
+              </p>
+            </div>
+            <div class="col-md-4 text-center">
+              <i class="fas fa-heartbeat fa-6x opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flash Messages -->
+      <% if (error && error.length > 0) { %>
+        <div class="col-12 mb-4">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (success && success.length > 0) { %>
+        <div class="col-12 mb-4">
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <%= success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- User Information Card -->
+      <div class="col-lg-4 mb-4">
+        <div class="user-card bg-white rounded shadow p-4 h-100">
+          <div class="text-center mb-4">
+            <div class="user-avatar bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px;">
+              <i class="fas fa-user fa-3x"></i>
+            </div>
+            <h3 class="fw-bold mb-1"><%= user.fullName %></h3>
+            <p class="text-muted mb-0">Blood Donor</p>
+          </div>
+          
+          <hr>
+          
+          <div class="user-details">
+            <div class="mb-3">
+              <small class="text-muted fw-bold">EMAIL</small>
+              <p class="mb-0"><%= user.email %></p>
+            </div>
+            <div class="mb-3">
+              <small class="text-muted fw-bold">PHONE</small>
+              <p class="mb-0"><%= user.phone %></p>
+            </div>
+            <div class="mb-3">
+              <small class="text-muted fw-bold">CITY</small>
+              <p class="mb-0"><%= user.city %></p>
+            </div>
+            <div class="mb-3">
+              <small class="text-muted fw-bold">BLOOD GROUP</small>
+              <p class="mb-0">
+                <span class="badge bg-danger fs-6"><%= user.bloodGroup %></span>
+              </p>
+            </div>
+            <div class="mb-0">
+              <small class="text-muted fw-bold">MEMBER SINCE</small>
+              <p class="mb-0"><%= user.createdAt.toLocaleDateString() %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Stats -->
+      <div class="col-lg-8 mb-4">
+        <div class="row g-4">
+          <!-- Total Donors Stat -->
+          <div class="col-md-6">
+            <div class="stat-card bg-white rounded shadow p-4 h-100">
+              <div class="d-flex align-items-center">
+                <div class="icon-box bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                  <i class="fas fa-users fa-2x"></i>
+                </div>
+                <div>
+                  <h5 class="fw-bold mb-1">Total Donors</h5>
+                  <p class="display-4 fw-bold text-danger mb-0"><%= stats.totalDonors %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Total Blood Requests Stat -->
+          <div class="col-md-6">
+            <div class="stat-card bg-white rounded shadow p-4 h-100">
+              <div class="d-flex align-items-center">
+                <div class="icon-box bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                  <i class="fas fa-hand-holding-heart fa-2x"></i>
+                </div>
+                <div>
+                  <h5 class="fw-bold mb-1">Blood Requests</h5>
+                  <p class="display-4 fw-bold text-danger mb-0"><%= stats.totalBloodRequests %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="col-12">
+            <div class="actions-card bg-white rounded shadow p-4">
+              <h4 class="fw-bold mb-4">Quick Actions</h4>
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <a href="/become-donor" class="btn btn-outline-danger w-100 py-3 fw-bold">
+                    <i class="fas fa-tint me-2"></i><%= donorProfile ? 'Edit Donor' : 'Become Donor' %>
+                  </a>
+                </div>
+                <div class="col-md-3">
+                  <a href="/search-donors" class="btn btn-outline-danger w-100 py-3 fw-bold">
+                    <i class="fas fa-search me-2"></i>Search Donors
+                  </a>
+                </div>
+                <div class="col-md-3">
+                  <a href="/blood-request" class="btn btn-outline-danger w-100 py-3 fw-bold">
+                    <i class="fas fa-plus me-2"></i>Request Blood
+                  </a>
+                </div>
+                <div class="col-md-3">
+                  <a href="/my-requests" class="btn btn-outline-danger w-100 py-3 fw-bold">
+                    <i class="fas fa-list me-2"></i>My Requests
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Blood Requests -->
+          <div class="col-12">
+            <div class="recent-requests-card bg-white rounded shadow p-4">
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold mb-0">Recent Blood Requests</h4>
+                <a href="/my-requests" class="btn btn-sm btn-outline-danger">View All</a>
+              </div>
+              <% if (recentRequests.length > 0) { %>
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Patient</th>
+                        <th>Blood Group</th>
+                        <th>City</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% recentRequests.forEach(function(request) { %>
+                        <tr>
+                          <td><%= request.patientName %></td>
+                          <td><span class="badge bg-danger"><%= request.bloodGroupRequired %></span></td>
+                          <td><%= request.city %></td>
+                          <td><span class="badge <%= request.status === 'Pending' ? 'bg-warning' : request.status === 'Fulfilled' ? 'bg-success' : 'bg-secondary' %>"><%= request.status %></span></td>
+                        </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              <% } else { %>
+                <p class="text-muted text-center py-3">No recent blood requests</p>
+              <% } %>
+            </div>
+          </div>
+
+          <!-- Logout Button -->
+          <div class="col-12">
+            <div class="logout-card bg-white rounded shadow p-4">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <h5 class="fw-bold mb-1">Ready to leave?</h5>
+                  <p class="text-muted mb-0">Click the button below to logout securely.</p>
+                </div>
+                <a href="/logout" class="btn btn-danger btn-lg px-5 py-3 fw-bold">
+                  <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

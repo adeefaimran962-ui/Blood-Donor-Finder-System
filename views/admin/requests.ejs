@@ -1,0 +1,110 @@
+<%- include('../partials/header') %>
+
+<!-- Admin Blood Requests Management Section -->
+<section class="admin-dashboard-section py-5">
+  <div class="container py-5">
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="display-5 fw-bold"><i class="fas fa-clipboard-list me-3 text-warning"></i>Manage Blood Requests</h1>
+            <p class="lead text-muted">View and manage all blood requests</p>
+          </div>
+          <a href="/admin/dashboard" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flash Messages -->
+    <% if (error && error.length > 0) { %>
+      <div class="col-12 mb-4">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="fas fa-exclamation-circle me-2"></i>
+          <%= error %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    <% } %>
+
+    <% if (success && success.length > 0) { %>
+      <div class="col-12 mb-4">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="fas fa-check-circle me-2"></i>
+          <%= success %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Requests Table -->
+    <div class="row">
+      <div class="col-12">
+        <div class="table-card bg-white rounded shadow p-4">
+          <% if (requests.length > 0) { %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Blood Group</th>
+                    <th>Hospital</th>
+                    <th>City</th>
+                    <th>Required Date</th>
+                    <th>Contact</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% requests.forEach(function(request) { %>
+                    <tr>
+                      <td>
+                        <strong><%= request.patientName %></strong>
+                        <br>
+                        <small class="text-muted">By: <%= request.userId ? request.userId.fullName : 'Unknown' %></small>
+                      </td>
+                      <td><span class="badge bg-danger"><%= request.bloodGroupRequired %></span></td>
+                      <td><%= request.hospitalName %></td>
+                      <td><%= request.city %></td>
+                      <td><%= request.requiredDate.toLocaleDateString() %></td>
+                      <td><%= request.contactNumber %></td>
+                      <td>
+                        <span class="badge <%= request.status === 'Pending' ? 'bg-warning' : request.status === 'Approved' ? 'bg-success' : 'bg-secondary' %>"><%= request.status %></span>
+                      </td>
+                      <td>
+                        <div class="btn-group" role="group">
+                          <form action="/admin/requests/<%= request._id %>/update-status" method="POST" class="d-inline">
+                            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                              <option value="Pending" <%= request.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                              <option value="Approved" <%= request.status === 'Approved' ? 'selected' : '' %>>Approved</option>
+                              <option value="Completed" <%= request.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+                            </select>
+                          </form>
+                          <form action="/admin/requests/<%= request._id %>/delete" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this request?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Request">
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </form>
+                        </div>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          <% } else { %>
+            <div class="text-center py-5">
+              <i class="fas fa-clipboard-list fa-5x text-muted mb-4"></i>
+              <h4 class="fw-bold">No Blood Requests Found</h4>
+              <p class="text-muted">There are no blood requests in the system yet.</p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

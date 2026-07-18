@@ -1,0 +1,872 @@
+/* ============================================
+   Blood Donor Finder System - Custom Styles
+   ============================================ */
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  padding-top: 76px;
+  /* Offset for fixed navbar */
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ============================================
+   Navigation Styles
+   ============================================ */
+
+.navbar {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.05);
+}
+
+.nav-link {
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: white;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link:hover {
+  color: #fff !important;
+}
+
+/* ============================================
+   Hero Section Styles
+   ============================================ */
+
+.hero-section {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/></svg>');
+  background-size: 100px;
+  animation: float 20s infinite linear;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+  }
+}
+
+.hero-content {
+  z-index: 1;
+  position: relative;
+}
+
+.hero-buttons .btn {
+  transition: all 0.3s ease;
+  border-radius: 50px;
+}
+
+.hero-buttons .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hero-image {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* ============================================
+   About Section Styles
+   ============================================ */
+
+.about-section {
+  background-color: #fff;
+}
+
+.about-image {
+  animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.about-content h2 {
+  color: #dc3545;
+}
+
+.about-content ul li {
+  transition: transform 0.3s ease;
+}
+
+.about-content ul li:hover {
+  transform: translateX(10px);
+}
+
+/* ============================================
+   Why Donate Section Styles
+   ============================================ */
+
+.why-donate-section {
+  background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+}
+
+.why-card {
+  transition: all 0.3s ease;
+  border: none;
+  border-radius: 15px;
+}
+
+.why-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(220, 53, 69, 0.2);
+}
+
+.why-card .icon-box {
+  transition: transform 0.3s ease;
+}
+
+.why-card:hover .icon-box {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.why-card h4 {
+  color: #dc3545;
+}
+
+/* ============================================
+   Features Section Styles
+   ============================================ */
+
+.features-section {
+  background-color: #fff;
+}
+
+.feature-card {
+  transition: all 0.3s ease;
+  border-radius: 15px;
+  padding: 2rem;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+}
+
+.feature-icon {
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.1);
+}
+
+.feature-card h4 {
+  color: #dc3545;
+}
+
+/* ============================================
+   Statistics Section Styles
+   ============================================ */
+
+.statistics-section {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+}
+
+.stat-card {
+  transition: all 0.3s ease;
+  border: none;
+  border-radius: 15px;
+}
+
+.stat-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card i {
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover i {
+  transform: scale(1.1) rotate(10deg);
+}
+
+/* ============================================
+   Call To Action Section Styles
+   ============================================ */
+
+.cta-section {
+  background: linear-gradient(to bottom, #fff, #f8f9fa);
+}
+
+.cta-content {
+  transition: transform 0.3s ease;
+}
+
+.cta-content:hover {
+  transform: scale(1.02);
+}
+
+.cta-content .btn {
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.cta-content .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   Footer Styles
+   ============================================ */
+
+footer {
+  background: linear-gradient(to bottom, #212529, #1a1d20);
+}
+
+footer h5 {
+  color: #dc3545;
+}
+
+footer a {
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #dc3545 !important;
+}
+
+.social-links a {
+  font-size: 1.5rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.social-links a:hover {
+  transform: scale(1.2);
+  color: #dc3545 !important;
+}
+
+footer .btn {
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+footer .btn:hover {
+  transform: scale(1.05);
+}
+
+/* ============================================
+   Responsive Styles
+   ============================================ */
+
+@media (max-width: 991px) {
+  body {
+    padding-top: 66px;
+  }
+  
+  .hero-section {
+    padding: 3rem 0;
+  }
+  
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-buttons .btn {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-top: 56px;
+  }
+  
+  .hero-section {
+    padding: 2rem 0;
+  }
+  
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .hero-buttons .btn {
+    width: 100%;
+  }
+  
+  .stat-card {
+    margin-bottom: 1rem;
+  }
+  
+  .why-card,
+  .feature-card {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .hero-content h1 {
+    font-size: 1.75rem;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+  }
+  
+  .display-4 {
+    font-size: 2rem !important;
+  }
+  
+  .display-5 {
+    font-size: 1.75rem !important;
+  }
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+.text-danger-custom {
+  color: #dc3545 !important;
+}
+
+.bg-danger-custom {
+  background-color: #dc3545 !important;
+}
+
+.btn-danger-custom {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  transition: all 0.3s ease;
+}
+
+.btn-danger-custom:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
+/* Scroll to Top Button */
+#scrollTop {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: none;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+#scrollTop:hover {
+  background-color: #c82333;
+  transform: translateY(-5px);
+}
+
+#scrollTop.show {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading Spinner */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  color: #dc3545;
+}
+
+/* ============================================
+   Authentication Pages Styles
+   ============================================ */
+
+.auth-section {
+  background: linear-gradient(to bottom, #f8f9fa, #fff);
+  min-height: calc(100vh - 76px);
+}
+
+.auth-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(220, 53, 69, 0.15);
+}
+
+.auth-card .form-control,
+.auth-card .form-select {
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.auth-card .form-control:focus,
+.auth-card .form-select:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.auth-card .btn-danger {
+  transition: all 0.3s ease;
+}
+
+.auth-card .btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(220, 53, 69, 0.3);
+}
+
+/* ============================================
+   Dashboard Styles
+   ============================================ */
+
+.dashboard-section {
+  background: linear-gradient(to bottom, #f8f9fa, #fff);
+  min-height: calc(100vh - 76px);
+}
+
+.welcome-card {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  transition: transform 0.3s ease;
+}
+
+.welcome-card:hover {
+  transform: scale(1.01);
+}
+
+.user-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.user-avatar {
+  transition: transform 0.3s ease;
+}
+
+.user-card:hover .user-avatar {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.stat-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card .icon-box {
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover .icon-box {
+  transform: scale(1.1) rotate(10deg);
+}
+
+.actions-card,
+.logout-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.actions-card:hover,
+.logout-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.actions-card .btn,
+.logout-card .btn {
+  transition: all 0.3s ease;
+}
+
+.actions-card .btn:hover,
+.logout-card .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
+/* ============================================
+   Auth Pages Responsive Styles
+   ============================================ */
+
+@media (max-width: 767px) {
+  .auth-card {
+    padding: 2rem !important;
+  }
+  
+  .welcome-card {
+    padding: 2rem !important;
+  }
+  
+  .welcome-card h1 {
+    font-size: 1.75rem !important;
+  }
+  
+  .user-card {
+    margin-bottom: 1rem;
+  }
+}
+
+/* ============================================
+   Search Donors Styles
+   ============================================ */
+
+.search-section {
+  background: linear-gradient(to bottom, #f8f9fa, #fff);
+  min-height: calc(100vh - 76px);
+}
+
+.search-form-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-form-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.donor-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.donor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(220, 53, 69, 0.15);
+}
+
+.donor-avatar {
+  transition: transform 0.3s ease;
+}
+
+.donor-card:hover .donor-avatar {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.no-results {
+  padding: 3rem 1rem;
+}
+
+/* ============================================
+   Blood Request Styles
+   ============================================ */
+
+.request-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.request-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.no-requests {
+  padding: 3rem 1rem;
+}
+
+/* ============================================
+   Dashboard Recent Requests Styles
+   ============================================ */
+
+.recent-requests-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recent-requests-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.recent-requests-card .table {
+  margin-bottom: 0;
+}
+
+.recent-requests-card .table th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dc3545;
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.recent-requests-card .table td {
+  vertical-align: middle;
+}
+
+/* ============================================
+   Responsive Styles for New Pages
+   ============================================ */
+
+@media (max-width: 767px) {
+  .search-form-card {
+    padding: 1.5rem !important;
+  }
+  
+  .donor-card {
+    margin-bottom: 1rem;
+  }
+  
+  .request-card {
+    margin-bottom: 1rem;
+  }
+  
+  .recent-requests-card {
+    padding: 1.5rem !important;
+  }
+  
+  .recent-requests-card .table-responsive {
+    font-size: 0.875rem;
+  }
+}
+
+/* ============================================
+   Admin Dashboard Styles
+   ============================================ */
+
+.admin-dashboard-section {
+  background: linear-gradient(to bottom, #f8f9fa, #fff);
+  min-height: calc(100vh - 76px);
+}
+
+.stat-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.actions-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.actions-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.recent-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recent-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.table-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.table-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.table-card .table {
+  margin-bottom: 0;
+}
+
+.table-card .table th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dc3545;
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.table-card .table td {
+  vertical-align: middle;
+}
+
+/* ============================================
+   Admin Responsive Styles
+   ============================================ */
+
+@media (max-width: 767px) {
+  .stat-card {
+    margin-bottom: 1rem;
+  }
+  
+  .actions-card {
+    padding: 1.5rem !important;
+  }
+  
+  .recent-card {
+    margin-bottom: 1rem;
+  }
+  
+  .table-card {
+    padding: 1.5rem !important;
+  }
+  
+  .table-card .table-responsive {
+    font-size: 0.875rem;
+  }
+}
+
+/* ============================================
+   Additional UI Polish
+   ============================================ */
+
+.btn {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.form-control, .form-select {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.card {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.alert {
+  border-radius: 8px;
+  border: none;
+}
+
+.badge {
+  padding: 0.5em 0.8em;
+  border-radius: 6px;
+}
+
+/* Loading spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Better focus states for accessibility */
+a:focus, button:focus {
+  outline: 2px solid #dc3545;
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for all interactive elements */
+a, button, .btn, .card, .form-control, .form-select {
+  transition: all 0.3s ease;
+}

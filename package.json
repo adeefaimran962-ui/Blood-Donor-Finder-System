@@ -1,0 +1,32 @@
+{
+  "name": "blood-donor-finder",
+  "version": "1.0.0",
+  "description": "A professional Blood Donor Finder System web application",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "blood",
+    "donor",
+    "finder",
+    "healthcare",
+    "express",
+    "mongodb"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.3",
+    "ejs": "^3.1.9",
+    "dotenv": "^16.3.1",
+    "express-session": "^1.17.3",
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
