@@ -107,6 +107,21 @@
                     </div>
                   <% } %>
                 </div>
+                
+                <!-- View Details Button -->
+                <div class="mt-3">
+                  <button type="button" class="btn btn-danger w-100 fw-bold" 
+                          data-bs-toggle="modal" 
+                          data-bs-target="#donorModal"
+                          data-donor-name="<%= donor.fullName %>"
+                          data-donor-blood="<%= donor.bloodGroup %>"
+                          data-donor-city="<%= donor.city %>"
+                          data-donor-phone="<%= donor.contactNumber %>"
+                          data-donor-status="<%= donor.availabilityStatus %>"
+                          data-donor-last-donation="<%= donor.lastDonationDate ? donor.lastDonationDate.toLocaleDateString() : 'Not donated yet' %>">
+                    <i class="fas fa-info-circle me-2"></i>View Details
+                  </button>
+                </div>
               </div>
             </div>
           <% }); %>
@@ -140,5 +155,122 @@
     </div>
   </div>
 </section>
+
+<!-- Donor Details Modal -->
+<div class="modal fade" id="donorModal" tabindex="-1" aria-labelledby="donorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title fw-bold" id="donorModalLabel">
+          <i class="fas fa-user-circle me-2"></i>Donor Details
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <div class="donor-avatar bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px;">
+            <i class="fas fa-user fa-3x"></i>
+          </div>
+          <h4 class="fw-bold mb-2" id="modalDonorName">Donor Name</h4>
+          <span class="badge bg-success fs-6" id="modalDonorStatus">Available</span>
+        </div>
+        
+        <div class="donor-details-info">
+          <div class="row mb-3">
+            <div class="col-6">
+              <div class="detail-item p-3 bg-light rounded">
+                <i class="fas fa-tint text-danger fa-2x mb-2"></i>
+                <p class="mb-0 text-muted small">Blood Group</p>
+                <h5 class="fw-bold mb-0" id="modalDonorBlood">A+</h5>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="detail-item p-3 bg-light rounded">
+                <i class="fas fa-map-marker-alt text-danger fa-2x mb-2"></i>
+                <p class="mb-0 text-muted small">City</p>
+                <h5 class="fw-bold mb-0" id="modalDonorCity">City Name</h5>
+              </div>
+            </div>
+          </div>
+          
+          <div class="detail-item p-3 bg-light rounded mb-3">
+            <i class="fas fa-phone text-danger fa-2x mb-2"></i>
+            <p class="mb-0 text-muted small">Phone Number</p>
+            <h5 class="fw-bold mb-0" id="modalDonorPhone">+1234567890</h5>
+          </div>
+          
+          <div class="detail-item p-3 bg-light rounded mb-3">
+            <i class="fas fa-calendar-alt text-danger fa-2x mb-2"></i>
+            <p class="mb-0 text-muted small">Last Donation</p>
+            <h5 class="fw-bold mb-0" id="modalDonorLastDonation">Not donated yet</h5>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="row g-2 mt-4">
+          <div class="col-6">
+            <a href="#" id="callNowBtn" class="btn btn-success w-100 fw-bold py-3">
+              <i class="fas fa-phone-alt me-2"></i>Call Now
+            </a>
+          </div>
+          <div class="col-6">
+            <a href="#" id="whatsappBtn" class="btn btn-success w-100 fw-bold py-3" style="background-color: #25D366;">
+              <i class="fab fa-whatsapp me-2"></i>WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// JavaScript to populate modal with donor data
+document.addEventListener('DOMContentLoaded', function() {
+  const donorModal = document.getElementById('donorModal');
+  
+  donorModal.addEventListener('show.bs.modal', function(event) {
+    const button = event.relatedTarget;
+    
+    // Extract donor data from button attributes
+    const donorName = button.getAttribute('data-donor-name');
+    const donorBlood = button.getAttribute('data-donor-blood');
+    const donorCity = button.getAttribute('data-donor-city');
+    const donorPhone = button.getAttribute('data-donor-phone');
+    const donorStatus = button.getAttribute('data-donor-status');
+    const donorLastDonation = button.getAttribute('data-donor-last-donation');
+    
+    // Populate modal with donor data
+    document.getElementById('modalDonorName').textContent = donorName;
+    document.getElementById('modalDonorBlood').textContent = donorBlood;
+    document.getElementById('modalDonorCity').textContent = donorCity;
+    document.getElementById('modalDonorPhone').textContent = donorPhone;
+    document.getElementById('modalDonorStatus').textContent = donorStatus;
+    document.getElementById('modalDonorLastDonation').textContent = donorLastDonation;
+    
+    // Update status badge color based on availability
+    const statusBadge = document.getElementById('modalDonorStatus');
+    statusBadge.className = 'badge fs-6';
+    if (donorStatus.toLowerCase() === 'available') {
+      statusBadge.classList.add('bg-success');
+    } else if (donorStatus.toLowerCase() === 'unavailable') {
+      statusBadge.classList.add('bg-danger');
+    } else {
+      statusBadge.classList.add('bg-warning');
+    }
+    
+    // Update Call Now button with tel: link
+    const callNowBtn = document.getElementById('callNowBtn');
+    callNowBtn.href = 'tel:' + donorPhone.replace(/[^0-9]/g, '');
+    
+    // Update WhatsApp button with wa.me link
+    const whatsappBtn = document.getElementById('whatsappBtn');
+    whatsappBtn.href = 'https://wa.me/' + donorPhone.replace(/[^0-9]/g, '');
+  });
+});
+</script>
 
 <%- include('partials/footer') %>
