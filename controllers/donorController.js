@@ -118,11 +118,11 @@ exports.deleteDonorProfile = async (req, res) => {
 };
 
 /**
- * Search donors by blood group and city
+ * Search donors by blood group, city, and availability status
  */
 exports.searchDonors = async (req, res) => {
   try {
-    const { bloodGroup, city } = req.query;
+    const { bloodGroup, city, availability } = req.query;
     
     // Server-side validation for blood group
     const validBloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -131,7 +131,20 @@ exports.searchDonors = async (req, res) => {
       return res.render('search-donors', {
         title: 'Search Donors - Blood Donor Finder',
         donors: [],
-        searchParams: { bloodGroup: '', city: city || '' },
+        searchParams: { bloodGroup: '', city: city || '', availability: availability || '' },
+        error: req.flash('error'),
+        success: req.flash('success')
+      });
+    }
+
+    // Server-side validation for availability status
+    const validAvailability = ['Available', 'Not Available'];
+    if (availability && availability !== '' && !validAvailability.includes(availability)) {
+      req.flash('error', 'Invalid availability status selected');
+      return res.render('search-donors', {
+        title: 'Search Donors - Blood Donor Finder',
+        donors: [],
+        searchParams: { bloodGroup: bloodGroup || '', city: city || '', availability: '' },
         error: req.flash('error'),
         success: req.flash('success')
       });
@@ -140,15 +153,22 @@ exports.searchDonors = async (req, res) => {
     // Sanitize city input
     const sanitizedCity = city && city.trim() ? city.trim() : '';
     
-    // Build query - search only Available donors
-    let query = { availabilityStatus: 'Available' };
+    // Build query - start with empty object
+    let query = {};
     
+    // Add availability filter only if user selected a specific status
+    if (availability && availability !== '') {
+      query.availabilityStatus = availability;
+    }
+    
+    // Add blood group filter if selected
     if (bloodGroup && bloodGroup !== '') {
       query.bloodGroup = bloodGroup;
     }
     
+    // Add city filter if provided (case-insensitive search)
     if (sanitizedCity) {
-      query.city = { $regex: sanitizedCity, $options: 'i' }; // Case-insensitive search
+      query.city = { $regex: sanitizedCity, $options: 'i' };
     }
 
     const donors = await Donor.find(query).sort({ createdAt: -1 });
@@ -156,7 +176,11 @@ exports.searchDonors = async (req, res) => {
     res.render('search-donors', {
       title: 'Search Donors - Blood Donor Finder',
       donors: donors,
-      searchParams: { bloodGroup: bloodGroup || '', city: sanitizedCity },
+      searchParams: { 
+        bloodGroup: bloodGroup || '', 
+        city: sanitizedCity,
+        availability: availability || ''
+      },
       error: req.flash('error'),
       success: req.flash('success')
     });
@@ -166,7 +190,7 @@ exports.searchDonors = async (req, res) => {
     res.render('search-donors', {
       title: 'Search Donors - Blood Donor Finder',
       donors: [],
-      searchParams: { bloodGroup: '', city: '' },
+      searchParams: { bloodGroup: '', city: '', availability: '' },
       error: req.flash('error'),
       success: req.flash('success')
     });

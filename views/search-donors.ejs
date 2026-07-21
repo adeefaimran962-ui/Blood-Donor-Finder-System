@@ -29,7 +29,7 @@
     <!-- Search Form -->
     <div class="search-form-card bg-white rounded shadow-lg p-4 mb-5">
       <form action="/search-donors" method="GET" class="row g-3">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="bloodGroup" class="form-label fw-bold">Blood Group</label>
           <select class="form-select form-select-lg" id="bloodGroup" name="bloodGroup">
             <option value="">All Blood Groups</option>
@@ -43,12 +43,20 @@
             <option value="O-" <%= searchParams.bloodGroup === 'O-' ? 'selected' : '' %>>O-</option>
           </select>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="city" class="form-label fw-bold">City</label>
           <input type="text" class="form-control form-control-lg" id="city" name="city" 
                  placeholder="Enter city name" value="<%= searchParams.city || '' %>">
         </div>
-        <div class="col-md-4 d-flex align-items-end">
+        <div class="col-md-3">
+          <label for="availability" class="form-label fw-bold">Availability</label>
+          <select class="form-select form-select-lg" id="availability" name="availability">
+            <option value="">All</option>
+            <option value="Available" <%= searchParams.availability === 'Available' ? 'selected' : '' %>>Available</option>
+            <option value="Not Available" <%= searchParams.availability === 'Not Available' ? 'selected' : '' %>>Not Available</option>
+          </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
           <button type="submit" class="btn btn-danger btn-lg w-100 fw-bold">
             <i class="fas fa-search me-2"></i>Search Donors
           </button>
@@ -135,7 +143,7 @@
           <i class="fas fa-search fa-5x text-muted mb-4"></i>
           <h3 class="fw-bold mb-3">No Donors Found</h3>
           <p class="lead text-muted">
-            <% if (searchParams.bloodGroup || searchParams.city) { %>
+            <% if (searchParams.bloodGroup || searchParams.city || searchParams.availability) { %>
               We couldn't find any donors matching your search criteria. Try different filters or check back later.
             <% } else { %>
               No donors are currently registered. Be the first to become a donor!
