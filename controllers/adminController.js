@@ -191,7 +191,7 @@ exports.updateRequestStatus = async (req, res) => {
     const requestId = req.params.id;
     const { status } = req.body;
 
-    if (!['Pending', 'Approved', 'Completed'].includes(status)) {
+    if (!['Pending', 'Approved', 'Completed', 'Rejected'].includes(status)) {
       req.flash('error', 'Invalid status');
       return res.redirect('/admin/requests');
     }

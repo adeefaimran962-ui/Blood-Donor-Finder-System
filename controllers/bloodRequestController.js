@@ -80,12 +80,25 @@ exports.postBloodRequest = async (req, res) => {
  */
 exports.getMyRequests = async (req, res) => {
   try {
-    const requests = await BloodRequest.find({ userId: req.session.userId })
-      .sort({ createdAt: -1 });
+    const { status } = req.query;
+    
+    // Build query
+    let query = { userId: req.session.userId };
+    
+    // Add status filter if provided
+    if (status && status !== '') {
+      const validStatuses = ['Pending', 'Approved', 'Completed', 'Rejected'];
+      if (validStatuses.includes(status)) {
+        query.status = status;
+      }
+    }
+
+    const requests = await BloodRequest.find(query).sort({ createdAt: -1 });
 
     res.render('my-requests', {
       title: 'My Blood Requests - Blood Donor Finder',
       requests: requests,
+      searchParams: { status: status || '' },
       error: req.flash('error'),
       success: req.flash('success')
     });

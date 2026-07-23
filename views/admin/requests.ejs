@@ -71,7 +71,7 @@
                       <td><%= request.requiredDate.toLocaleDateString() %></td>
                       <td><%= request.contactNumber %></td>
                       <td>
-                        <span class="badge <%= request.status === 'Pending' ? 'bg-warning' : request.status === 'Approved' ? 'bg-success' : 'bg-secondary' %>"><%= request.status %></span>
+                        <span class="badge <%= request.status === 'Pending' ? 'bg-warning' : request.status === 'Approved' ? 'bg-info' : request.status === 'Completed' ? 'bg-success' : 'bg-danger' %>"><%= request.status %></span>
                       </td>
                       <td>
                         <div class="btn-group" role="group">
@@ -80,6 +80,7 @@
                               <option value="Pending" <%= request.status === 'Pending' ? 'selected' : '' %>>Pending</option>
                               <option value="Approved" <%= request.status === 'Approved' ? 'selected' : '' %>>Approved</option>
                               <option value="Completed" <%= request.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+                              <option value="Rejected" <%= request.status === 'Rejected' ? 'selected' : '' %>>Rejected</option>
                             </select>
                           </form>
                           <form action="/admin/requests/<%= request._id %>/delete" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this request?');">
