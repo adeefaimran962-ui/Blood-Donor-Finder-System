@@ -14,6 +14,7 @@ router.post('/blood-request', isAuthenticated, bloodRequestController.postBloodR
 
 // My Requests Routes
 router.get('/my-requests', isAuthenticated, bloodRequestController.getMyRequests);
+router.get('/blood-request/:id/details', isAuthenticated, bloodRequestController.getRequestDetails);
 router.post('/blood-request/:id/delete', isAuthenticated, bloodRequestController.deleteBloodRequest);
 
 module.exports = router;

@@ -1,0 +1,257 @@
+<%- include('partials/header') %>
+
+<!-- Request Details Section -->
+<section class="dashboard-section py-5">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-12 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h1 class="display-5 fw-bold">Blood Request Details</h1>
+            <p class="lead text-muted">View complete request information and status</p>
+          </div>
+          <a href="/my-requests" class="btn btn-outline-secondary btn-lg">
+            <i class="fas fa-arrow-left me-2"></i>Back to My Requests
+          </a>
+        </div>
+      </div>
+
+      <!-- Flash Messages -->
+      <% if (error && error.length > 0) { %>
+        <div class="col-12 mb-4">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (success && success.length > 0) { %>
+        <div class="col-12 mb-4">
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <%= success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- Request Details Card -->
+      <div class="col-12">
+        <div class="request-details-card bg-white rounded shadow p-4">
+          <!-- Patient Information -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h3 class="fw-bold mb-3">
+                <i class="fas fa-user-injured text-danger me-2"></i>Patient Information
+              </h3>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Patient Name:</strong>
+              <p class="mb-0"><%= request.patientName %></p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Blood Group Required:</strong>
+              <p class="mb-0"><span class="badge bg-danger fs-6"><%= request.bloodGroupRequired %></span></p>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- Hospital Information -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h3 class="fw-bold mb-3">
+                <i class="fas fa-hospital text-danger me-2"></i>Hospital Information
+              </h3>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Hospital Name:</strong>
+              <p class="mb-0"><%= request.hospitalName %></p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>City:</strong>
+              <p class="mb-0"><%= request.city %></p>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- Contact Information -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h3 class="fw-bold mb-3">
+                <i class="fas fa-phone-alt text-danger me-2"></i>Contact Information
+              </h3>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Contact Number:</strong>
+              <p class="mb-0"><%= request.contactNumber %></p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Required Date:</strong>
+              <p class="mb-0"><%= request.requiredDate.toLocaleDateString() %></p>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- Additional Notes -->
+          <% if (request.additionalNotes) { %>
+            <div class="row mb-4">
+              <div class="col-12">
+                <h3 class="fw-bold mb-3">
+                  <i class="fas fa-sticky-note text-danger me-2"></i>Additional Notes
+                </h3>
+                <p class="mb-0"><%= request.additionalNotes %></p>
+              </div>
+            </div>
+            <hr>
+          <% } %>
+
+          <!-- Request Status Tracker -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h3 class="fw-bold mb-3">
+                <i class="fas fa-tasks text-danger me-2"></i>Request Status Tracking
+              </h3>
+              
+              <div class="status-tracker">
+                <div class="row text-center">
+                  <div class="col-3">
+                    <div class="status-step <%= request.status === 'Pending' ? 'active' : '' %>">
+                      <div class="status-icon <%= request.status === 'Pending' ? 'bg-warning' : 'bg-secondary' %>">
+                        <i class="fas fa-clock"></i>
+                      </div>
+                      <div class="status-label mt-2">Pending</div>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="status-step <%= request.status === 'Approved' ? 'active' : '' %>">
+                      <div class="status-icon <%= request.status === 'Approved' ? 'bg-info' : 'bg-secondary' %>">
+                        <i class="fas fa-check"></i>
+                      </div>
+                      <div class="status-label mt-2">Approved</div>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="status-step <%= request.status === 'Completed' ? 'active' : '' %>">
+                      <div class="status-icon <%= request.status === 'Completed' ? 'bg-success' : 'bg-secondary' %>">
+                        <i class="fas fa-check-double"></i>
+                      </div>
+                      <div class="status-label mt-2">Completed</div>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="status-step <%= request.status === 'Rejected' ? 'active' : '' %>">
+                      <div class="status-icon <%= request.status === 'Rejected' ? 'bg-danger' : 'bg-secondary' %>">
+                        <i class="fas fa-times"></i>
+                      </div>
+                      <div class="status-label mt-2">Rejected</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mt-4">
+                <span class="badge <%= request.status === 'Pending' ? 'bg-warning' : request.status === 'Approved' ? 'bg-info' : request.status === 'Completed' ? 'bg-success' : 'bg-danger' %> fs-5">
+                  Current Status: <%= request.status %>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- Request Metadata -->
+          <div class="row mb-4">
+            <div class="col-12">
+              <h3 class="fw-bold mb-3">
+                <i class="fas fa-info-circle text-danger me-2"></i>Request Information
+              </h3>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Request Created:</strong>
+              <p class="mb-0"><%= request.createdAt.toLocaleDateString() %> at <%= request.createdAt.toLocaleTimeString() %></p>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Last Updated:</strong>
+              <p class="mb-0"><%= request.updatedAt.toLocaleDateString() %> at <%= request.updatedAt.toLocaleTimeString() %></p>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex gap-2">
+                <% if (isOwnRequest) { %>
+                  <form action="/blood-request/<%= request._id %>/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this request?');">
+                    <button type="submit" class="btn btn-danger">
+                      <i class="fas fa-trash me-2"></i>Delete Request
+                    </button>
+                  </form>
+                <% } %>
+                <a href="/my-requests" class="btn btn-outline-secondary">
+                  <i class="fas fa-list me-2"></i>View All Requests
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.status-tracker {
+  padding: 20px 0;
+}
+
+.status-step {
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.status-step.active {
+  opacity: 1;
+}
+
+.status-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  font-size: 1.5rem;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.status-step.active .status-icon {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.status-label {
+  font-weight: 600;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .status-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+  }
+  
+  .status-label {
+    font-size: 0.875rem;
+  }
+}
+</style>
+
+<%- include('partials/footer') %>

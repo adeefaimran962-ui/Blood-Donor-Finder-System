@@ -134,3 +134,50 @@ exports.deleteBloodRequest = async (req, res) => {
   }
 };
 
+/**
+ * View blood request details
+ */
+exports.getRequestDetails = async (req, res) => {
+  try {
+    const requestId = req.params.id;
+    
+    // Find the request and populate user details
+    const request = await BloodRequest.findById(requestId).populate('userId', 'fullName email');
+    
+    if (!request) {
+      req.flash('error', 'Request not found');
+      return res.redirect('/my-requests');
+    }
+
+    // Check if user is authorized to view this request
+    // Users can only view their own requests, admins can view all
+    const User = require('../models/User');
+    const currentUser = await User.findById(req.session.userId);
+    
+    if (!currentUser) {
+      req.flash('error', 'User not found');
+      return res.redirect('/login');
+    }
+
+    const isOwnRequest = request.userId._id.toString() === req.session.userId;
+    const isAdmin = currentUser.isAdmin;
+
+    if (!isOwnRequest && !isAdmin) {
+      req.flash('error', 'You do not have permission to view this request');
+      return res.redirect('/my-requests');
+    }
+
+    res.render('request-details', {
+      title: 'Request Details - Blood Donor Finder',
+      request: request,
+      isOwnRequest: isOwnRequest,
+      isAdmin: isAdmin,
+      error: req.flash('error'),
+      success: req.flash('success')
+    });
+  } catch (error) {
+    console.error('Error loading request details:', error);
+    req.flash('error', 'An error occurred while loading request details');
+    res.redirect('/my-requests');
+  }
+};

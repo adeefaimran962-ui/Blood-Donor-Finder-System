@@ -75,6 +75,9 @@
                       </td>
                       <td>
                         <div class="btn-group" role="group">
+                          <a href="/blood-request/<%= request._id %>/details" class="btn btn-sm btn-outline-info" title="View Details">
+                            <i class="fas fa-eye"></i>
+                          </a>
                           <form action="/admin/requests/<%= request._id %>/update-status" method="POST" class="d-inline">
                             <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
                               <option value="Pending" <%= request.status === 'Pending' ? 'selected' : '' %>>Pending</option>
