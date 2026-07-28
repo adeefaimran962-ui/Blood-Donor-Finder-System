@@ -122,7 +122,7 @@ exports.deleteDonorProfile = async (req, res) => {
  */
 exports.searchDonors = async (req, res) => {
   try {
-    const { bloodGroup, city, availability } = req.query;
+    const { bloodGroup, city, availability, page } = req.query;
     
     // Server-side validation for blood group
     const validBloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -132,6 +132,7 @@ exports.searchDonors = async (req, res) => {
         title: 'Search Donors - Blood Donor Finder',
         donors: [],
         searchParams: { bloodGroup: '', city: city || '', availability: availability || '' },
+        pagination: { currentPage: 1, totalPages: 1, hasNext: false, hasPrev: false },
         error: req.flash('error'),
         success: req.flash('success')
       });
@@ -145,6 +146,7 @@ exports.searchDonors = async (req, res) => {
         title: 'Search Donors - Blood Donor Finder',
         donors: [],
         searchParams: { bloodGroup: bloodGroup || '', city: city || '', availability: '' },
+        pagination: { currentPage: 1, totalPages: 1, hasNext: false, hasPrev: false },
         error: req.flash('error'),
         success: req.flash('success')
       });
@@ -171,15 +173,35 @@ exports.searchDonors = async (req, res) => {
       query.city = { $regex: sanitizedCity, $options: 'i' };
     }
 
-    const donors = await Donor.find(query).sort({ createdAt: -1 });
+    // Pagination settings
+    const donorsPerPage = 6;
+    const currentPage = parseInt(page) || 1;
+    const skip = (currentPage - 1) * donorsPerPage;
+
+    // Get total count for pagination
+    const totalDonors = await Donor.countDocuments(query);
+    const totalPages = Math.ceil(totalDonors / donorsPerPage);
+
+    // Get paginated donors
+    const donors = await Donor.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(donorsPerPage);
 
     res.render('search-donors', {
       title: 'Search Donors - Blood Donor Finder',
       donors: donors,
       searchParams: { 
         bloodGroup: bloodGroup || '', 
-        city: sanitizedCity,
-        availability: availability || ''
+        city: sanitizedCity, 
+        availability: availability || '' 
+      },
+      pagination: {
+        currentPage: currentPage,
+        totalPages: totalPages,
+        hasNext: currentPage < totalPages,
+        hasPrev: currentPage > 1,
+        totalDonors: totalDonors
       },
       error: req.flash('error'),
       success: req.flash('success')
@@ -191,6 +213,7 @@ exports.searchDonors = async (req, res) => {
       title: 'Search Donors - Blood Donor Finder',
       donors: [],
       searchParams: { bloodGroup: '', city: '', availability: '' },
+      pagination: { currentPage: 1, totalPages: 1, hasNext: false, hasPrev: false },
       error: req.flash('error'),
       success: req.flash('success')
     });

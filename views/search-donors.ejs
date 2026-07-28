@@ -135,9 +135,64 @@
           <% }); %>
         </div>
         
-        <div class="text-center mt-4">
-          <p class="text-muted"><i class="fas fa-info-circle me-2"></i>Found <%= donors.length %> donor(s)</p>
-        </div>
+        <!-- Pagination -->
+        <% if (pagination.totalPages > 1) { %>
+          <nav aria-label="Donor search pagination" class="mt-4">
+            <ul class="pagination justify-content-center">
+              <% if (pagination.hasPrev) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= pagination.currentPage - 1 %><%= searchParams.bloodGroup ? '&bloodGroup=' + searchParams.bloodGroup : '' %><%= searchParams.city ? '&city=' + searchParams.city : '' %><%= searchParams.availability ? '&availability=' + searchParams.availability : '' %>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                </li>
+              <% } else { %>
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                </li>
+              <% } %>
+
+              <% for (let i = 1; i <= pagination.totalPages; i++) { %>
+                <% if (i === pagination.currentPage) { %>
+                  <li class="page-item active">
+                    <a class="page-link" href="#"><%= i %><span class="sr-only">(current)</span></a>
+                  </li>
+                <% } else { %>
+                  <li class="page-item">
+                    <a class="page-link" href="?page=<%= i %><%= searchParams.bloodGroup ? '&bloodGroup=' + searchParams.bloodGroup : '' %><%= searchParams.city ? '&city=' + searchParams.city : '' %><%= searchParams.availability ? '&availability=' + searchParams.availability : '' %>"><%= i %></a>
+                  </li>
+                <% } %>
+              <% } %>
+
+              <% if (pagination.hasNext) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= pagination.currentPage + 1 %><%= searchParams.bloodGroup ? '&bloodGroup=' + searchParams.bloodGroup : '' %><%= searchParams.city ? '&city=' + searchParams.city : '' %><%= searchParams.availability ? '&availability=' + searchParams.availability : '' %>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </li>
+              <% } else { %>
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </li>
+              <% } %>
+            </ul>
+          </nav>
+          
+          <div class="text-center mt-3">
+            <p class="text-muted"><i class="fas fa-info-circle me-2"></i>Showing page <%= pagination.currentPage %> of <%= pagination.totalPages %> (Total: <%= pagination.totalDonors %> donor(s))</p>
+          </div>
+        <% } else { %>
+          <div class="text-center mt-4">
+            <p class="text-muted"><i class="fas fa-info-circle me-2"></i>Found <%= pagination.totalDonors %> donor(s)</p>
+          </div>
+        <% } %>
       <% } else { %>
         <div class="no-results text-center py-5">
           <i class="fas fa-search fa-5x text-muted mb-4"></i>
