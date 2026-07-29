@@ -122,7 +122,7 @@ exports.deleteDonorProfile = async (req, res) => {
  */
 exports.searchDonors = async (req, res) => {
   try {
-    const { bloodGroup, city, availability, page } = req.query;
+    const { bloodGroup, city, availability, page, sortBy } = req.query;
     
     // Server-side validation for blood group
     const validBloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -131,7 +131,7 @@ exports.searchDonors = async (req, res) => {
       return res.render('search-donors', {
         title: 'Search Donors - Blood Donor Finder',
         donors: [],
-        searchParams: { bloodGroup: '', city: city || '', availability: availability || '' },
+        searchParams: { bloodGroup: '', city: city || '', availability: availability || '', sortBy: sortBy || '' },
         pagination: { currentPage: 1, totalPages: 1, hasNext: false, hasPrev: false },
         error: req.flash('error'),
         success: req.flash('success')
@@ -145,7 +145,7 @@ exports.searchDonors = async (req, res) => {
       return res.render('search-donors', {
         title: 'Search Donors - Blood Donor Finder',
         donors: [],
-        searchParams: { bloodGroup: bloodGroup || '', city: city || '', availability: '' },
+        searchParams: { bloodGroup: bloodGroup || '', city: city || '', availability: '', sortBy: sortBy || '' },
         pagination: { currentPage: 1, totalPages: 1, hasNext: false, hasPrev: false },
         error: req.flash('error'),
         success: req.flash('success')
@@ -182,9 +182,28 @@ exports.searchDonors = async (req, res) => {
     const totalDonors = await Donor.countDocuments(query);
     const totalPages = Math.ceil(totalDonors / donorsPerPage);
 
-    // Get paginated donors
+    // Build sort object based on sortBy parameter
+    let sortObj = {};
+    switch (sortBy) {
+      case 'newest':
+        sortObj = { createdAt: -1 };
+        break;
+      case 'nameAsc':
+        sortObj = { fullName: 1 };
+        break;
+      case 'nameDesc':
+        sortObj = { fullName: -1 };
+        break;
+      case 'cityAsc':
+        sortObj = { city: 1 };
+        break;
+      default:
+        sortObj = { createdAt: -1 }; // Default: newest first
+    }
+
+    // Get paginated donors with sorting
     const donors = await Donor.find(query)
-      .sort({ createdAt: -1 })
+      .sort(sortObj)
       .skip(skip)
       .limit(donorsPerPage);
 
@@ -194,7 +213,8 @@ exports.searchDonors = async (req, res) => {
       searchParams: { 
         bloodGroup: bloodGroup || '', 
         city: sanitizedCity, 
-        availability: availability || '' 
+        availability: availability || '',
+        sortBy: sortBy || 'newest'
       },
       pagination: {
         currentPage: currentPage,
@@ -212,7 +232,7 @@ exports.searchDonors = async (req, res) => {
     res.render('search-donors', {
       title: 'Search Donors - Blood Donor Finder',
       donors: [],
-      searchParams: { bloodGroup: '', city: '', availability: '' },
+      searchParams: { bloodGroup: '', city: '', availability: '', sortBy: 'newest' },
       pagination: { currentPage: 1, totalPages: 1, hasNext: false, hasPrev: false },
       error: req.flash('error'),
       success: req.flash('success')
