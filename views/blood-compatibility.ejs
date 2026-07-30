@@ -1,0 +1,292 @@
+<%- include('partials/header') %>
+
+<!-- Blood Compatibility Section -->
+<section class="blood-compatibility-section py-5">
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <i class="fas fa-tint fa-4x text-danger mb-3"></i>
+      <h2 class="display-5 fw-bold">Blood Compatibility Checker</h2>
+      <p class="lead">Check which blood groups can donate to or receive from each other</p>
+    </div>
+
+    <!-- Blood Group Selector -->
+    <div class="selector-card bg-white rounded shadow-lg p-4 mb-5">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-8">
+          <label for="bloodGroupSelect" class="form-label fw-bold">Select Blood Group</label>
+          <select class="form-select form-select-lg" id="bloodGroupSelect">
+            <option value="">-- Select Blood Group --</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <button type="button" id="resetBtn" class="btn btn-outline-danger btn-lg w-100 fw-bold">
+            <i class="fas fa-redo me-2"></i>Reset
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="results-section" style="display: none;">
+      <div class="row g-4">
+        <!-- Can Receive From Card -->
+        <div class="col-lg-6">
+          <div class="compatibility-card bg-white rounded shadow p-4 h-100">
+            <div class="card-header bg-success text-white rounded p-3 mb-4">
+              <h4 class="fw-bold mb-0">
+                <i class="fas fa-arrow-down me-2"></i>Can Receive From
+              </h4>
+            </div>
+            <div id="receiveList" class="blood-group-list">
+              <!-- Blood groups will be populated here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Can Donate To Card -->
+        <div class="col-lg-6">
+          <div class="compatibility-card bg-white rounded shadow p-4 h-100">
+            <div class="card-header bg-danger text-white rounded p-3 mb-4">
+              <h4 class="fw-bold mb-0">
+                <i class="fas fa-arrow-up me-2"></i>Can Donate To
+              </h4>
+            </div>
+            <div id="donateList" class="blood-group-list">
+              <!-- Blood groups will be populated here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Selected Blood Group Display -->
+      <div class="selected-group-card bg-white rounded shadow p-4 mt-4 text-center">
+        <h4 class="fw-bold mb-3">
+          <i class="fas fa-tint text-danger me-2"></i>Selected Blood Group
+        </h4>
+        <span id="selectedBloodGroup" class="badge bg-danger fs-3 px-4 py-3"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.blood-compatibility-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.selector-card {
+  border-left: 5px solid #dc3545;
+}
+
+.compatibility-card {
+  transition: all 0.3s ease;
+  border-left: 5px solid #dc3545;
+}
+
+.compatibility-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  border-radius: 8px !important;
+}
+
+.blood-group-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease forwards;
+  opacity: 0;
+}
+
+.blood-group-item:hover {
+  background: #e9ecef;
+  transform: translateX(5px);
+}
+
+.blood-group-item i {
+  color: #28a745;
+  font-size: 1.2rem;
+  margin-right: 10px;
+}
+
+.blood-group-badge {
+  margin-left: auto;
+  padding: 5px 15px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.selected-group-card {
+  border-left: 5px solid #dc3545;
+  animation: slideUp 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.results-section {
+  animation: slideUp 0.5s ease forwards;
+}
+
+@media (max-width: 768px) {
+  .blood-compatibility-section {
+    padding: 2rem 0;
+  }
+  
+  .display-5 {
+    font-size: 2rem;
+  }
+  
+  .blood-group-item {
+    padding: 10px 12px;
+  }
+}
+</style>
+
+<script>
+// Blood compatibility data
+const bloodCompatibility = {
+  'A+': {
+    canReceiveFrom: ['A+', 'A-', 'O+', 'O-'],
+    canDonateTo: ['A+', 'AB+']
+  },
+  'A-': {
+    canReceiveFrom: ['A-', 'O-'],
+    canDonateTo: ['A+', 'A-', 'AB+', 'AB-']
+  },
+  'B+': {
+    canReceiveFrom: ['B+', 'B-', 'O+', 'O-'],
+    canDonateTo: ['B+', 'AB+']
+  },
+  'B-': {
+    canReceiveFrom: ['B-', 'O-'],
+    canDonateTo: ['B+', 'B-', 'AB+', 'AB-']
+  },
+  'AB+': {
+    canReceiveFrom: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+    canDonateTo: ['AB+']
+  },
+  'AB-': {
+    canReceiveFrom: ['A-', 'B-', 'AB-', 'O-'],
+    canDonateTo: ['AB+', 'AB-']
+  },
+  'O+': {
+    canReceiveFrom: ['O+', 'O-'],
+    canDonateTo: ['A+', 'B+', 'AB+', 'O+']
+  },
+  'O-': {
+    canReceiveFrom: ['O-'],
+    canDonateTo: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
+  }
+};
+
+// DOM elements
+const bloodGroupSelect = document.getElementById('bloodGroupSelect');
+const resetBtn = document.getElementById('resetBtn');
+const resultsSection = document.getElementById('resultsSection');
+const receiveList = document.getElementById('receiveList');
+const donateList = document.getElementById('donateList');
+const selectedBloodGroup = document.getElementById('selectedBloodGroup');
+
+// Function to render blood group list
+function renderBloodGroupList(groups, container) {
+  container.innerHTML = '';
+  
+  groups.forEach((group, index) => {
+    const item = document.createElement('div');
+    item.className = 'blood-group-item';
+    item.style.animationDelay = `${index * 0.1}s`;
+    
+    item.innerHTML = `
+      <i class="fas fa-check-circle"></i>
+      <span class="blood-group-badge badge bg-danger">${group}</span>
+    `;
+    
+    container.appendChild(item);
+  });
+}
+
+// Function to display compatibility results
+function displayCompatibility(bloodGroup) {
+  const compatibility = bloodCompatibility[bloodGroup];
+  
+  if (!compatibility) {
+    return;
+  }
+  
+  // Clear previous results
+  receiveList.innerHTML = '';
+  donateList.innerHTML = '';
+  
+  // Render can receive from
+  renderBloodGroupList(compatibility.canReceiveFrom, receiveList);
+  
+  // Render can donate to
+  renderBloodGroupList(compatibility.canDonateTo, donateList);
+  
+  // Set selected blood group
+  selectedBloodGroup.textContent = bloodGroup;
+  
+  // Show results section
+  resultsSection.style.display = 'block';
+}
+
+// Event listener for blood group selection
+bloodGroupSelect.addEventListener('change', function() {
+  const selectedValue = this.value;
+  
+  if (selectedValue) {
+    displayCompatibility(selectedValue);
+  } else {
+    resultsSection.style.display = 'none';
+  }
+});
+
+// Event listener for reset button
+resetBtn.addEventListener('click', function() {
+  bloodGroupSelect.value = '';
+  resultsSection.style.display = 'none';
+});
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  bloodGroupSelect.value = '';
+  resultsSection.style.display = 'none';
+});
+</script>
+
+<%- include('partials/footer') %>

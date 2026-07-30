@@ -12,4 +12,15 @@ router.get('/', (req, res) => {
   });
 });
 
+/**
+ * Blood Compatibility Route
+ * Renders the blood compatibility checker page
+ */
+router.get('/blood-compatibility', (req, res) => {
+  res.render('blood-compatibility', {
+    title: 'Blood Compatibility Checker - Blood Donor Finder',
+    description: 'Check blood group compatibility for donation and transfusion'
+  });
+});
+
 module.exports = router;
