@@ -1,0 +1,197 @@
+<%- include('partials/header') %>
+
+<!-- About Us Section -->
+<section class="about-section py-5">
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <i class="fas fa-heartbeat fa-4x text-danger mb-3"></i>
+      <h1 class="display-5 fw-bold">About Blood Donor Finder</h1>
+      <p class="lead">Connecting blood donors with those in need, saving lives together</p>
+    </div>
+
+    <!-- Mission Card -->
+    <div class="mission-card bg-white rounded shadow-lg p-5 mb-5">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <h2 class="fw-bold text-danger mb-4">
+            <i class="fas fa-bullseye me-2"></i>Our Mission
+          </h2>
+          <p class="text-muted fs-5">
+            Blood Donor Finder System is dedicated to bridging the gap between blood donors and patients in need. Our platform makes it easy for individuals to find compatible blood donors in their area, ensuring that life-saving blood is available when it matters most.
+          </p>
+          <p class="text-muted fs-5">
+            We believe that every blood donation can save up to three lives, and our mission is to make the donation process simple, accessible, and efficient for everyone.
+          </p>
+        </div>
+        <div class="col-lg-6 text-center">
+          <div class="mission-icon bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 200px; height: 200px;">
+            <i class="fas fa-hands-helping fa-4x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="how-it-works mb-5">
+      <h2 class="text-center fw-bold mb-5">
+        <i class="fas fa-cogs text-danger me-2"></i>How Our Platform Helps
+      </h2>
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <div class="feature-card bg-white rounded shadow p-4 h-100">
+            <div class="text-center mb-4">
+              <div class="feature-icon bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                <i class="fas fa-search fa-2x"></i>
+              </div>
+            </div>
+            <h4 class="fw-bold text-center mb-3">Find Donors</h4>
+            <p class="text-muted text-center">
+              Patients can easily search for compatible blood donors by blood group, city, and availability status. Our advanced filters help you find the right donor quickly.
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="feature-card bg-white rounded shadow p-4 h-100">
+            <div class="text-center mb-4">
+              <div class="feature-icon bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                <i class="fas fa-user-plus fa-2x"></i>
+              </div>
+            </div>
+            <h4 class="fw-bold text-center mb-3">Become a Donor</h4>
+            <p class="text-muted text-center">
+              Register as a blood donor and create your profile. Update your availability status to let others know when you're ready to donate and save lives.
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <div class="feature-card bg-white rounded shadow p-4 h-100">
+            <div class="text-center mb-4">
+              <div class="feature-icon bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                <i class="fas fa-file-medical fa-2x"></i>
+              </div>
+            </div>
+            <h4 class="fw-bold text-center mb-3">Blood Requests</h4>
+            <p class="text-muted text-center">
+              Create blood requests when you or a loved one needs blood. Track the status of your requests and get notified when donors are available.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Why Blood Donation Matters -->
+    <div class="why-donate bg-danger text-white rounded shadow-lg p-5 mb-5">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <h2 class="fw-bold mb-4">
+            <i class="fas fa-heart me-2"></i>Why Blood Donation Matters
+          </h2>
+          <ul class="list-unstyled fs-5">
+            <li class="mb-3">
+              <i class="fas fa-check-circle me-2"></i>
+              One donation can save up to 3 lives
+            </li>
+            <li class="mb-3">
+              <i class="fas fa-check-circle me-2"></i>
+              Blood cannot be manufactured; it can only come from donors
+            </li>
+            <li class="mb-3">
+              <i class="fas fa-check-circle me-2"></i>
+              Every 2 seconds, someone needs blood
+            </li>
+            <li class="mb-3">
+              <i class="fas fa-check-circle me-2"></i>
+              Regular blood donation improves cardiovascular health
+            </li>
+            <li class="mb-0">
+              <i class="fas fa-check-circle me-2"></i>
+              Donating blood burns calories and reduces stress
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-6 text-center">
+          <div class="donate-icon bg-white text-danger rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 200px; height: 200px;">
+            <i class="fas fa-tint fa-4x"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="cta-card bg-white rounded shadow-lg p-5 text-center">
+      <h2 class="fw-bold mb-4">Ready to Make a Difference?</h2>
+      <p class="lead text-muted mb-4">
+        Join our community of life-savers today. Register as a donor or find the blood you need.
+      </p>
+      <div class="d-flex justify-content-center gap-3">
+        <% if (!user) { %>
+          <a href="/register" class="btn btn-danger btn-lg px-5 fw-bold">
+            <i class="fas fa-user-plus me-2"></i>Register as Donor
+          </a>
+        <% } else { %>
+          <a href="/become-donor" class="btn btn-danger btn-lg px-5 fw-bold">
+            <i class="fas fa-tint me-2"></i>Become a Donor
+          </a>
+        <% } %>
+        <a href="/search-donors" class="btn btn-outline-danger btn-lg px-5 fw-bold">
+          <i class="fas fa-search me-2"></i>Find Donors
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.about-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.mission-card,
+.feature-card,
+.cta-card {
+  transition: all 0.3s ease;
+  border-left: 5px solid #dc3545;
+}
+
+.mission-card:hover,
+.feature-card:hover,
+.cta-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.mission-icon,
+.donate-icon,
+.feature-icon {
+  transition: all 0.3s ease;
+}
+
+.mission-icon:hover,
+.donate-icon:hover,
+.feature-icon:hover {
+  transform: scale(1.1);
+}
+
+.why-donate {
+  border-left: 5px solid #fff;
+}
+
+@media (max-width: 768px) {
+  .about-section {
+    padding: 2rem 0;
+  }
+  
+  .display-5 {
+    font-size: 2rem;
+  }
+  
+  .mission-icon,
+  .donate-icon {
+    width: 150px !important;
+    height: 150px !important;
+  }
+}
+</style>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,211 @@
+<%- include('partials/header') %>
+
+<!-- FAQ Section -->
+<section class="faq-section py-5">
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <i class="fas fa-question-circle fa-4x text-danger mb-3"></i>
+      <h1 class="display-5 fw-bold">Frequently Asked Questions</h1>
+      <p class="lead">Find answers to common questions about Blood Donor Finder</p>
+    </div>
+
+    <!-- FAQ Accordion -->
+    <div class="faq-accordion">
+      <div class="accordion" id="faqAccordion">
+        
+        <!-- Question 1 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <i class="fas fa-user-plus text-danger me-2"></i>How can I become a blood donor?
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              To become a blood donor, you need to register an account on our platform. After registration, navigate to the "Become Donor" section and fill in your donor profile information including your blood group, city, contact details, and availability status. Once your profile is created, you will be listed in our donor database and can be found by patients searching for blood donors in your area.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              <i class="fas fa-search text-danger me-2"></i>How can I search for a donor?
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              You can search for blood donors using our "Find Donors" page. Simply select the blood group you need, enter the city, and optionally filter by availability status. Our system will display all matching donors with their contact information. You can also sort results by newest first, name, or city, and navigate through pages if there are many results.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              <i class="fas fa-filter text-danger me-2"></i>Can I filter donors by blood group and city?
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Yes! Our donor search feature allows you to filter donors by blood group (A+, A-, B+, B-, AB+, AB-, O+, O-), city, and availability status. You can use these filters individually or combine them to find the most suitable donor for your needs. The search results update in real-time as you apply filters.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFour">
+            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              <i class="fas fa-file-medical text-danger me-2"></i>How can I create a blood request?
+            </button>
+          </h2>
+          <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              To create a blood request, log in to your account and navigate to the "Blood Request" page. Fill in the required information including patient name, blood group required, hospital name, city, required date, contact number, and any additional notes. Submit the request and it will be visible to donors matching your criteria. You can track the status of your request through the "My Requests" page.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFive">
+            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+              <i class="fas fa-tasks text-danger me-2"></i>How can I track my blood request?
+            </button>
+          </h2>
+          <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              After creating a blood request, you can track its status by visiting the "My Requests" page. Here you'll see all your requests with their current status (Pending, Approved, Completed, or Rejected). You can also click "View Details" on any request to see comprehensive information including a visual status tracker showing the progress of your request.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingSix">
+            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+              <i class="fas fa-clock text-danger me-2"></i>How can I update my donor availability?
+            </button>
+          </h2>
+          <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              You can update your donor availability status by visiting your donor profile through the "Become Donor" page. Simply update the "Availability Status" field to either "Available" or "Not Available" and save your changes. This helps patients know when you're ready to donate blood and when you're not available.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingSeven">
+            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+              <i class="fas fa-user-check text-danger me-2"></i>Is registration required to become a donor?
+            </button>
+          </h2>
+          <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Yes, registration is required to become a blood donor on our platform. This ensures the authenticity of donor profiles and helps maintain the quality and reliability of our donor database. Registration is free and only takes a few minutes. You'll need to provide basic information and create a secure password to protect your account.
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingEight">
+            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+              <i class="fas fa-tint text-danger me-2"></i>What is the Blood Compatibility Checker?
+            </button>
+          </h2>
+          <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              The Blood Compatibility Checker is a tool that helps you understand which blood groups can donate to or receive from each other. Simply select your blood group, and the tool will display which blood groups you can receive blood from and which blood groups you can donate to. This information is based on standard blood type compatibility rules.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Additional Help -->
+    <div class="help-card bg-white rounded shadow-lg p-5 mt-5 text-center">
+      <h3 class="fw-bold mb-3">
+        <i class="fas fa-headset text-danger me-2"></i>Still Have Questions?
+      </h3>
+      <p class="text-muted mb-4">
+        Can't find the answer you're looking for? Feel free to contact us directly.
+      </p>
+      <a href="/contact" class="btn btn-danger btn-lg px-5 fw-bold">
+        <i class="fas fa-envelope me-2"></i>Contact Us
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+.faq-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.accordion-item {
+  border: none;
+  border-radius: 8px !important;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.accordion-button {
+  background: white;
+  border: none;
+  padding: 20px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.accordion-button:not(.collapsed) {
+  background: #fff5f5;
+  color: #dc3545;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.accordion-body {
+  padding: 20px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.help-card {
+  transition: all 0.3s ease;
+  border-left: 5px solid #dc3545;
+}
+
+.help-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+  .faq-section {
+    padding: 2rem 0;
+  }
+  
+  .display-5 {
+    font-size: 2rem;
+  }
+  
+  .accordion-button {
+    padding: 15px;
+    font-size: 1rem;
+  }
+}
+</style>
+
+<%- include('partials/footer') %>

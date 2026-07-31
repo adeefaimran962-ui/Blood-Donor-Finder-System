@@ -1,0 +1,202 @@
+<%- include('partials/header') %>
+
+<!-- Contact Us Section -->
+<section class="contact-section py-5">
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <i class="fas fa-envelope fa-4x text-danger mb-3"></i>
+      <h1 class="display-5 fw-bold">Contact Us</h1>
+      <p class="lead">Get in touch with Blood Donor Finder System</p>
+    </div>
+
+    <!-- Flash Messages -->
+    <% if (error && error.length > 0) { %>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <%= error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% } %>
+
+    <% if (success && success.length > 0) { %>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <%= success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% } %>
+
+    <div class="row g-5">
+      <!-- Contact Form -->
+      <div class="col-lg-8">
+        <div class="contact-form-card bg-white rounded shadow-lg p-5">
+          <h3 class="fw-bold mb-4">
+            <i class="fas fa-paper-plane text-danger me-2"></i>Send us a Message
+          </h3>
+          <form action="/contact" method="POST">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="fullName" class="form-label fw-bold">Full Name</label>
+                <input type="text" class="form-control form-control-lg" id="fullName" name="fullName" 
+                       placeholder="Enter your full name" required>
+              </div>
+              <div class="col-md-6">
+                <label for="email" class="form-label fw-bold">Email Address</label>
+                <input type="email" class="form-control form-control-lg" id="email" name="email" 
+                       placeholder="Enter your email" required>
+              </div>
+              <div class="col-12">
+                <label for="subject" class="form-label fw-bold">Subject</label>
+                <input type="text" class="form-control form-control-lg" id="subject" name="subject" 
+                       placeholder="Enter the subject" required>
+              </div>
+              <div class="col-12">
+                <label for="message" class="form-label fw-bold">Message</label>
+                <textarea class="form-control form-control-lg" id="message" name="message" rows="6" 
+                          placeholder="Write your message here..." required></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-danger btn-lg px-5 fw-bold">
+                  <i class="fas fa-paper-plane me-2"></i>Send Message
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-lg-4">
+        <div class="contact-info-card bg-white rounded shadow-lg p-5 h-100">
+          <h3 class="fw-bold mb-4">
+            <i class="fas fa-info-circle text-danger me-2"></i>Contact Information
+          </h3>
+          
+          <div class="contact-item mb-4">
+            <div class="d-flex align-items-start">
+              <div class="contact-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold mb-1">Address</h5>
+                <p class="text-muted mb-0">123 Healthcare Street<br>Medical City, MC 12345</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-item mb-4">
+            <div class="d-flex align-items-start">
+              <div class="contact-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold mb-1">Phone</h5>
+                <p class="text-muted mb-0">+1 234 567 8900</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-item mb-4">
+            <div class="d-flex align-items-start">
+              <div class="contact-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold mb-1">Email</h5>
+                <p class="text-muted mb-0">info@blooddonorfinder.com</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-item mb-4">
+            <div class="d-flex align-items-start">
+              <div class="contact-icon bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold mb-1">Working Hours</h5>
+                <p class="text-muted mb-0">Mon - Fri: 9:00 AM - 6:00 PM<br>Sat - Sun: Closed</p>
+              </div>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="social-links">
+            <h5 class="fw-bold mb-3">Follow Us</h5>
+            <div class="d-flex gap-3">
+              <a href="#" class="btn btn-outline-danger btn-lg rounded-circle" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="btn btn-outline-danger btn-lg rounded-circle" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="btn btn-outline-danger btn-lg rounded-circle" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="#" class="btn btn-outline-danger btn-lg rounded-circle" style="width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.contact-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.contact-form-card,
+.contact-info-card {
+  transition: all 0.3s ease;
+  border-left: 5px solid #dc3545;
+}
+
+.contact-form-card:hover,
+.contact-info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.contact-icon {
+  transition: all 0.3s ease;
+}
+
+.contact-icon:hover {
+  transform: scale(1.1);
+}
+
+.contact-item {
+  transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+  transform: translateX(5px);
+}
+
+.social-links .btn {
+  transition: all 0.3s ease;
+}
+
+.social-links .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
+@media (max-width: 768px) {
+  .contact-section {
+    padding: 2rem 0;
+  }
+  
+  .display-5 {
+    font-size: 2rem;
+  }
+}
+</style>
+
+<%- include('partials/footer') %>
