@@ -28,7 +28,8 @@ exports.postBloodRequest = async (req, res) => {
       city,
       requiredDate,
       contactNumber,
-      additionalNotes
+      additionalNotes,
+      requiredWithinHours
     } = req.body;
 
     // Validation
@@ -63,7 +64,8 @@ exports.postBloodRequest = async (req, res) => {
       city,
       requiredDate: requiredDateObj,
       contactNumber,
-      additionalNotes: additionalNotes || ''
+      additionalNotes: additionalNotes || '',
+      requiredWithinHours: requiredWithinHours ? parseInt(requiredWithinHours) : null
     });
 
     req.flash('success', 'Blood request submitted successfully!');

@@ -93,6 +93,24 @@
               <strong>Required Date:</strong>
               <p class="mb-0"><%= request.requiredDate.toLocaleDateString() %></p>
             </div>
+            <% if (request.requiredWithinHours) { %>
+              <div class="col-md-12 mb-3">
+                <strong>Emergency Countdown:</strong>
+                <div class="mt-2">
+                  <span class="badge <%= request.requiredWithinHours <= 6 ? 'bg-danger' : request.requiredWithinHours <= 24 ? 'bg-warning' : 'bg-info' %> fs-6 me-2">
+                    <%= request.requiredWithinHours %> Hours
+                  </span>
+                  <div class="countdown-timer mt-2" 
+                       data-created-at="<%= request.createdAt.getTime() %>"
+                       data-hours="<%= request.requiredWithinHours %>">
+                    <div class="alert alert-info">
+                      <i class="fas fa-clock me-2"></i>
+                      <span id="countdown-display">Loading countdown...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% } %>
           </div>
 
           <hr>
@@ -255,3 +273,84 @@
 </style>
 
 <%- include('partials/footer') %>
+
+<% if (request.requiredWithinHours) { %>
+<script>
+// Emergency Blood Request Countdown Timer for Request Details
+function initializeDetailCountdown() {
+  const countdownElement = document.querySelector('.countdown-timer');
+  
+  if (!countdownElement) return;
+  
+  const createdAt = parseInt(countdownElement.getAttribute('data-created-at'));
+  const hours = parseInt(countdownElement.getAttribute('data-hours'));
+  const displayElement = document.getElementById('countdown-display');
+  
+  // Calculate deadline
+  const deadline = new Date(createdAt + (hours * 60 * 60 * 1000));
+  
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const timeLeft = deadline.getTime() - now;
+    
+    if (timeLeft > 0) {
+      const daysLeft = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hoursLeft = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
+      
+      // Determine urgency and styling
+      let urgencyClass = 'alert-success';
+      let urgencyText = 'Normal Priority';
+      let urgencyIcon = 'fa-check-circle';
+      
+      if (timeLeft < 2 * 60 * 60 * 1000) { // Less than 2 hours
+        urgencyClass = 'alert-danger';
+        urgencyText = 'Critical - Immediate Action Required';
+        urgencyIcon = 'fa-exclamation-triangle';
+      } else if (timeLeft < 6 * 60 * 60 * 1000) { // Less than 6 hours
+        urgencyClass = 'alert-warning';
+        urgencyText = 'Urgent - Quick Response Needed';
+        urgencyIcon = 'fa-clock';
+      }
+      
+      // Update alert class
+      const alertElement = countdownElement.querySelector('.alert');
+      alertElement.className = `alert ${urgencyClass}`;
+      
+      let timeDisplay = '';
+      if (daysLeft > 0) {
+        timeDisplay = `${daysLeft}d ${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`;
+      } else {
+        timeDisplay = `${hoursLeft}h ${minutesLeft}m ${secondsLeft}s`;
+      }
+      
+      displayElement.innerHTML = `
+        <i class="fas ${urgencyIcon} me-2"></i>
+        <strong>${urgencyText}</strong><br>
+        <span class="fs-4 fw-bold">${timeDisplay} remaining</span>
+      `;
+    } else {
+      // Request has expired
+      const alertElement = countdownElement.querySelector('.alert');
+      alertElement.className = 'alert alert-secondary';
+      
+      displayElement.innerHTML = `
+        <i class="fas fa-times-circle me-2"></i>
+        <strong>Request Expired</strong><br>
+        <span>The emergency countdown has ended</span>
+      `;
+    }
+  }
+  
+  // Update immediately and then every second
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+}
+
+// Initialize countdown when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  initializeDetailCountdown();
+});
+</script>
+<% } %>

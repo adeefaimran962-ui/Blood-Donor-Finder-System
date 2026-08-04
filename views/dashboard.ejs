@@ -162,6 +162,7 @@
                         <th>Blood Group</th>
                         <th>City</th>
                         <th>Status</th>
+                        <th>Emergency</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -171,6 +172,18 @@
                           <td><span class="badge bg-danger"><%= request.bloodGroupRequired %></span></td>
                           <td><%= request.city %></td>
                           <td><span class="badge <%= request.status === 'Pending' ? 'bg-warning' : request.status === 'Fulfilled' ? 'bg-success' : 'bg-secondary' %>"><%= request.status %></span></td>
+                          <td>
+                            <% if (request.requiredWithinHours) { %>
+                              <div class="countdown-timer-small" 
+                                   data-request-id="<%= request._id %>"
+                                   data-created-at="<%= request.createdAt.getTime() %>"
+                                   data-hours="<%= request.requiredWithinHours %>">
+                                <small class="text-muted">Loading...</small>
+                              </div>
+                            <% } else { %>
+                              <small class="text-muted">No emergency</small>
+                            <% } %>
+                          </td>
                         </tr>
                       <% }); %>
                     </tbody>
@@ -203,3 +216,59 @@
 </section>
 
 <%- include('partials/footer') %>
+
+<script>
+// Emergency Blood Request Countdown Timer for Dashboard
+function initializeDashboardCountdowns() {
+  const countdownElements = document.querySelectorAll('.countdown-timer-small');
+  
+  countdownElements.forEach(element => {
+    const requestId = element.getAttribute('data-request-id');
+    const createdAt = parseInt(element.getAttribute('data-created-at'));
+    const hours = parseInt(element.getAttribute('data-hours'));
+    
+    // Calculate deadline
+    const deadline = new Date(createdAt + (hours * 60 * 60 * 1000));
+    
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const timeLeft = deadline.getTime() - now;
+      
+      if (timeLeft > 0) {
+        const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
+        const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        
+        // Determine badge color and text based on urgency
+        let badgeClass = 'bg-success';
+        let urgencyText = 'Normal';
+        
+        if (timeLeft < 2 * 60 * 60 * 1000) { // Less than 2 hours
+          badgeClass = 'bg-danger';
+          urgencyText = 'Critical';
+        } else if (timeLeft < 6 * 60 * 60 * 1000) { // Less than 6 hours
+          badgeClass = 'bg-warning text-dark';
+          urgencyText = 'Urgent';
+        }
+        
+        element.innerHTML = `
+          <span class="badge ${badgeClass}">${urgencyText}</span><br>
+          <small class="text-muted">${hoursLeft}h ${minutesLeft}m left</small>
+        `;
+      } else {
+        element.innerHTML = `
+          <span class="badge bg-secondary">Expired</span>
+        `;
+      }
+    }
+    
+    // Update immediately and then every minute (less frequent for dashboard)
+    updateCountdown();
+    setInterval(updateCountdown, 60000);
+  });
+}
+
+// Initialize countdowns when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  initializeDashboardCountdowns();
+});
+</script>

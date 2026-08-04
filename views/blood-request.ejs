@@ -108,6 +108,24 @@
                 <div class="form-text">Date must be today or in the future</div>
               </div>
 
+              <!-- Required Within Hours -->
+              <div class="col-md-6 mb-4">
+                <label for="requiredWithinHours" class="form-label fw-bold">
+                  <i class="fas fa-clock me-2 text-danger"></i>Required Within (Optional)
+                </label>
+                <select class="form-select form-select-lg" 
+                        id="requiredWithinHours" 
+                        name="requiredWithinHours">
+                  <option value="">Select urgency level</option>
+                  <option value="2">2 Hours (Critical)</option>
+                  <option value="6">6 Hours (Very Urgent)</option>
+                  <option value="12">12 Hours (Urgent)</option>
+                  <option value="24">24 Hours (Normal)</option>
+                  <option value="48">48 Hours (Planned)</option>
+                </select>
+                <div class="form-text">Emergency countdown will be shown if selected</div>
+              </div>
+
               <!-- Contact Number -->
               <div class="col-md-6 mb-4">
                 <label for="contactNumber" class="form-label fw-bold">

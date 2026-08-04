@@ -54,6 +54,14 @@ const bloodRequestSchema = new mongoose.Schema({
     trim: true,
     maxlength: [500, 'Additional notes cannot exceed 500 characters']
   },
+  requiredWithinHours: {
+    type: Number,
+    enum: {
+      values: [2, 6, 12, 24, 48],
+      message: '{VALUE} is not a valid time option'
+    },
+    required: false
+  },
   status: {
     type: String,
     enum: {

@@ -102,6 +102,23 @@
                       <i class="fas fa-calendar-alt text-danger me-2"></i>
                       <strong>Required Date:</strong> <%= request.requiredDate.toLocaleDateString() %>
                     </div>
+                    <% if (request.requiredWithinHours) { %>
+                      <div class="mb-2">
+                        <i class="fas fa-clock text-danger me-2"></i>
+                        <strong>Emergency:</strong>
+                        <span class="badge <%= request.requiredWithinHours <= 6 ? 'bg-danger' : request.requiredWithinHours <= 24 ? 'bg-warning' : 'bg-info' %> fs-6">
+                          <%= request.requiredWithinHours %>H
+                        </span>
+                        <div class="mt-2" id="countdown-<%= request._id %>">
+                          <div class="countdown-timer" 
+                               data-request-id="<%= request._id %>"
+                               data-created-at="<%= request.createdAt.getTime() %>"
+                               data-hours="<%= request.requiredWithinHours %>">
+                            <small class="text-muted">Loading countdown...</small>
+                          </div>
+                        </div>
+                      </div>
+                    <% } %>
                     <div class="mb-2">
                       <i class="fas fa-phone text-danger me-2"></i>
                       <strong>Contact:</strong> <%= request.contactNumber %>
@@ -146,3 +163,61 @@
 </section>
 
 <%- include('partials/footer') %>
+
+<script>
+// Emergency Blood Request Countdown Timer
+function initializeCountdowns() {
+  const countdownElements = document.querySelectorAll('.countdown-timer');
+  
+  countdownElements.forEach(element => {
+    const requestId = element.getAttribute('data-request-id');
+    const createdAt = parseInt(element.getAttribute('data-created-at'));
+    const hours = parseInt(element.getAttribute('data-hours'));
+    
+    // Calculate deadline
+    const deadline = new Date(createdAt + (hours * 60 * 60 * 1000));
+    
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const timeLeft = deadline.getTime() - now;
+      
+      if (timeLeft > 0) {
+        const hoursLeft = Math.floor(timeLeft / (1000 * 60 * 60));
+        const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
+        
+        // Determine badge color based on urgency
+        let badgeClass = 'bg-success';
+        let urgencyText = 'Normal';
+        
+        if (timeLeft < 2 * 60 * 60 * 1000) { // Less than 2 hours
+          badgeClass = 'bg-danger';
+          urgencyText = 'Critical';
+        } else if (timeLeft < 6 * 60 * 60 * 1000) { // Less than 6 hours
+          badgeClass = 'bg-warning';
+          urgencyText = 'Urgent';
+        }
+        
+        element.innerHTML = `
+          <span class="badge ${badgeClass} me-2">${urgencyText}</span>
+          <strong>${hoursLeft}h ${minutesLeft}m ${secondsLeft}s remaining</strong>
+        `;
+      } else {
+        element.innerHTML = `
+          <span class="badge bg-secondary me-2">Expired</span>
+          <strong>Request Expired</strong>
+        `;
+      }
+    }
+    
+    // Update immediately and then every second
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  });
+}
+
+// Initialize countdowns when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  initializeCountdowns();
+});
+</script>
