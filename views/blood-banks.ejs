@@ -1,0 +1,467 @@
+<%- include('partials/header') %>
+
+<!-- Blood Banks Section -->
+<section class="blood-banks-section py-5">
+  <div class="container py-5">
+    <div class="row">
+      <!-- Page Header -->
+      <div class="col-12 mb-5">
+        <div class="text-center">
+          <i class="fas fa-hospital-alt fa-4x text-danger mb-3"></i>
+          <h1 class="display-4 fw-bold">Nearby Blood Banks</h1>
+          <p class="lead text-muted">Find blood banks in your area for donations and emergency requirements</p>
+        </div>
+      </div>
+
+      <!-- Search and Filter Section -->
+      <div class="col-12 mb-4">
+        <div class="search-filters-card bg-white rounded shadow p-4">
+          <form action="/blood-banks" method="GET" class="row g-3">
+            <!-- Search Box -->
+            <div class="col-md-4">
+              <label for="searchInput" class="form-label fw-bold">
+                <i class="fas fa-search me-2 text-danger"></i>Search Blood Banks
+              </label>
+              <input type="text" 
+                     class="form-control form-control-lg" 
+                     id="searchInput" 
+                     name="search" 
+                     placeholder="Search by name or address..."
+                     value="<%= searchParams.search %>">
+            </div>
+            
+            <!-- City Filter -->
+            <div class="col-md-3">
+              <label for="cityFilter" class="form-label fw-bold">
+                <i class="fas fa-map-marker-alt me-2 text-danger"></i>City
+              </label>
+              <select class="form-select form-select-lg" id="cityFilter" name="city">
+                <option value="">All Cities</option>
+                <% cities.forEach(function(city) { %>
+                  <option value="<%= city %>" <%= searchParams.city === city ? 'selected' : '' %>><%= city %></option>
+                <% }); %>
+              </select>
+            </div>
+            
+            <!-- Status Filter -->
+            <div class="col-md-3">
+              <label for="statusFilter" class="form-label fw-bold">
+                <i class="fas fa-toggle-on me-2 text-danger"></i>Status
+              </label>
+              <select class="form-select form-select-lg" id="statusFilter" name="status">
+                <option value="all" <%= searchParams.status === 'all' ? 'selected' : '' %>>All</option>
+                <option value="open" <%= searchParams.status === 'open' ? 'selected' : '' %>>Open Now</option>
+                <option value="closed" <%= searchParams.status === 'closed' ? 'selected' : '' %>>Closed</option>
+              </select>
+            </div>
+            
+            <!-- Search Button -->
+            <div class="col-md-2 d-flex align-items-end">
+              <button type="submit" class="btn btn-danger btn-lg w-100">
+                <i class="fas fa-search me-2"></i>Search
+              </button>
+            </div>
+          </form>
+          
+          <!-- Clear Filters -->
+          <% if (searchParams.search || searchParams.city || searchParams.status !== 'all') { %>
+            <div class="row mt-3">
+              <div class="col-12">
+                <a href="/blood-banks" class="btn btn-outline-secondary">
+                  <i class="fas fa-times me-2"></i>Clear Filters
+                </a>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Flash Messages -->
+      <% if (error && error.length > 0) { %>
+        <div class="col-12 mb-4">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (success && success.length > 0) { %>
+        <div class="col-12 mb-4">
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <%= success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- Blood Banks Results -->
+      <div class="col-12">
+        <% if (bloodBanks.length > 0) { %>
+          <div class="row g-4">
+            <% bloodBanks.forEach(function(bank) { %>
+              <div class="col-lg-6">
+                <div class="blood-bank-card bg-white rounded shadow h-100 position-relative overflow-hidden">
+                  <!-- Status Badge -->
+                  <div class="position-absolute top-0 end-0 m-3">
+                    <span class="badge <%= bank.isOpen ? 'bg-success' : 'bg-secondary' %> fs-6">
+                      <i class="fas fa-circle me-1"></i>
+                      <%= bank.isOpen ? 'Open' : 'Closed' %>
+                    </span>
+                  </div>
+                  
+                  <div class="p-4">
+                    <!-- Bank Header -->
+                    <div class="mb-3">
+                      <h4 class="fw-bold text-danger mb-1">
+                        <i class="fas fa-hospital-alt me-2"></i>
+                        <%= bank.name %>
+                      </h4>
+                      <p class="text-muted mb-0">
+                        <i class="fas fa-clock me-1"></i>
+                        <%= bank.openingHours %>
+                      </p>
+                    </div>
+                    
+                    <!-- Bank Details -->
+                    <div class="bank-details mb-4">
+                      <div class="mb-2">
+                        <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                        <strong>Address:</strong> <%= bank.address %>
+                      </div>
+                      <div class="mb-2">
+                        <i class="fas fa-city text-danger me-2"></i>
+                        <strong>City:</strong> <%= bank.city %>, <%= bank.state %>
+                      </div>
+                      <div class="mb-2">
+                        <i class="fas fa-phone text-danger me-2"></i>
+                        <strong>Contact:</strong> <%= bank.contactNumber %>
+                      </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                      <div class="row g-2">
+                        <div class="col-12 mb-2">
+                          <button type="button" 
+                                  class="btn btn-danger w-100 view-details-btn" 
+                                  data-bank-id="<%= bank.id %>"
+                                  data-bs-toggle="modal" 
+                                  data-bs-target="#bloodBankModal">
+                            <i class="fas fa-eye me-2"></i>View Details
+                          </button>
+                        </div>
+                        <div class="col-6">
+                          <a href="tel:<%= bank.contactNumber %>" class="btn btn-outline-danger w-100">
+                            <i class="fas fa-phone me-2"></i>Call Now
+                          </a>
+                        </div>
+                        <div class="col-6">
+                          <a href="https://www.google.com/maps/search/<%= encodeURIComponent(bank.address + ', ' + bank.city + ', ' + bank.state) %>" 
+                             target="_blank" 
+                             rel="noopener noreferrer" 
+                             class="btn btn-outline-success w-100">
+                            <i class="fas fa-directions me-2"></i>Directions
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="no-results text-center py-5">
+            <i class="fas fa-search fa-5x text-muted mb-4"></i>
+            <h3 class="fw-bold mb-3">No Blood Banks Found</h3>
+            <p class="lead text-muted mb-4">
+              No blood banks match your search criteria. Try adjusting your filters or search terms.
+            </p>
+            <a href="/blood-banks" class="btn btn-danger btn-lg px-5 py-3 fw-bold">
+              <i class="fas fa-refresh me-2"></i>Show All Blood Banks
+            </a>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Blood Bank Details Modal -->
+<div class="modal fade" id="bloodBankModal" tabindex="-1" aria-labelledby="bloodBankModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title fw-bold" id="bloodBankModalLabel">
+          <i class="fas fa-hospital-alt me-2"></i>Blood Bank Details
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalContent">
+        <div class="text-center py-5">
+          <div class="spinner-border text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-3 text-muted">Loading blood bank details...</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<style>
+/* Blood Bank Card Animations */
+.blood-bank-card {
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.blood-bank-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.blood-bank-card .btn {
+  transition: all 0.3s ease;
+}
+
+.blood-bank-card .btn:hover {
+  transform: scale(1.05);
+}
+
+/* Search Filters Card */
+.search-filters-card {
+  border-left: 5px solid #dc3545;
+}
+
+/* Status Badge Animation */
+.badge {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .blood-bank-card {
+    margin-bottom: 1rem;
+  }
+  
+  .action-buttons .btn {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+}
+
+/* Modal Content Styling */
+.modal-body .list-group-item {
+  border: none;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-body .list-group-item:last-child {
+  border-bottom: none;
+}
+
+/* Loading Animation */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+</style>
+
+<script>
+// Blood Bank Details Modal Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const modal = document.getElementById('bloodBankModal');
+  const modalContent = document.getElementById('modalContent');
+  
+  // Handle view details button clicks
+  document.querySelectorAll('.view-details-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const bankId = this.getAttribute('data-bank-id');
+      loadBloodBankDetails(bankId);
+    });
+  });
+  
+  // Reset modal content when closed
+  modal.addEventListener('hidden.bs.modal', function() {
+    modalContent.innerHTML = `
+      <div class="text-center py-5">
+        <div class="spinner-border text-danger" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Loading blood bank details...</p>
+      </div>
+    `;
+  });
+  
+  // Load blood bank details
+  function loadBloodBankDetails(bankId) {
+    fetch(`/api/blood-bank/${bankId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to load blood bank details');
+        }
+        return response.json();
+      })
+      .then(bank => {
+        displayBloodBankDetails(bank);
+      })
+      .catch(error => {
+        console.error('Error loading blood bank details:', error);
+        modalContent.innerHTML = `
+          <div class="text-center py-5">
+            <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+            <h5 class="fw-bold mb-3">Error Loading Details</h5>
+            <p class="text-muted">Unable to load blood bank details. Please try again later.</p>
+          </div>
+        `;
+      });
+  }
+  
+  // Display blood bank details in modal
+  function displayBloodBankDetails(bank) {
+    modalContent.innerHTML = `
+      <div class="row">
+        <div class="col-12">
+          <!-- Bank Info Header -->
+          <div class="text-center mb-4">
+            <h4 class="fw-bold text-danger">${bank.name}</h4>
+            <span class="badge ${bank.isOpen ? 'bg-success' : 'bg-secondary'} fs-6">
+              <i class="fas fa-circle me-1"></i>
+              ${bank.isOpen ? 'Currently Open' : 'Currently Closed'}
+            </span>
+          </div>
+          
+          <!-- Contact Information -->
+          <div class="mb-4">
+            <h5 class="fw-bold mb-3">
+              <i class="fas fa-address-book text-danger me-2"></i>Contact Information
+            </h5>
+            <div class="list-group list-group-flush">
+              <div class="list-group-item">
+                <strong><i class="fas fa-map-marker-alt text-danger me-2"></i>Address:</strong><br>
+                ${bank.address}<br>
+                ${bank.city}, ${bank.state}
+              </div>
+              <div class="list-group-item">
+                <strong><i class="fas fa-phone text-danger me-2"></i>Phone:</strong>
+                <a href="tel:${bank.contactNumber}" class="text-danger ms-2">${bank.contactNumber}</a>
+              </div>
+              <div class="list-group-item">
+                <strong><i class="fas fa-envelope text-danger me-2"></i>Email:</strong>
+                <a href="mailto:${bank.email}" class="text-danger ms-2">${bank.email}</a>
+              </div>
+              <div class="list-group-item">
+                <strong><i class="fas fa-globe text-danger me-2"></i>Website:</strong>
+                <a href="${bank.website}" target="_blank" rel="noopener noreferrer" class="text-danger ms-2">
+                  ${bank.website} <i class="fas fa-external-link-alt ms-1"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Operating Hours -->
+          <div class="mb-4">
+            <h5 class="fw-bold mb-3">
+              <i class="fas fa-clock text-danger me-2"></i>Operating Hours
+            </h5>
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle me-2"></i>
+              <strong>${bank.openingHours}</strong>
+            </div>
+          </div>
+          
+          <!-- Services Offered -->
+          <div class="mb-4">
+            <h5 class="fw-bold mb-3">
+              <i class="fas fa-medkit text-danger me-2"></i>Services Offered
+            </h5>
+            <div class="row">
+              ${bank.services.map(service => `
+                <div class="col-md-6 mb-2">
+                  <span class="badge bg-light text-dark border">
+                    <i class="fas fa-check text-success me-1"></i>${service}
+                  </span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          
+          <!-- Emergency Contact -->
+          <div class="mb-4">
+            <h5 class="fw-bold mb-3">
+              <i class="fas fa-ambulance text-danger me-2"></i>Emergency Contact
+            </h5>
+            <div class="alert alert-danger">
+              <strong>Emergency Hotline:</strong> 
+              <a href="tel:${bank.emergencyContact}" class="text-white fw-bold ms-2">
+                ${bank.emergencyContact}
+              </a>
+            </div>
+          </div>
+          
+          <!-- Quick Actions -->
+          <div class="mb-3">
+            <h5 class="fw-bold mb-3">
+              <i class="fas fa-bolt text-danger me-2"></i>Quick Actions
+            </h5>
+            <div class="row g-2">
+              <div class="col-md-4">
+                <a href="tel:${bank.contactNumber}" class="btn btn-danger w-100">
+                  <i class="fas fa-phone me-2"></i>Call Now
+                </a>
+              </div>
+              <div class="col-md-4">
+                <a href="mailto:${bank.email}" class="btn btn-outline-danger w-100">
+                  <i class="fas fa-envelope me-2"></i>Email
+                </a>
+              </div>
+              <div class="col-md-4">
+                <a href="https://www.google.com/maps/search/${encodeURIComponent(bank.address + ', ' + bank.city + ', ' + bank.state)}" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="btn btn-success w-100">
+                  <i class="fas fa-directions me-2"></i>Get Directions
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+});
+
+// Search form auto-submit on enter
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    this.closest('form').submit();
+  }
+});
+
+// Smooth scroll to results after search
+if (window.location.search.includes('search') || window.location.search.includes('city') || window.location.search.includes('status')) {
+  setTimeout(() => {
+    const resultsSection = document.querySelector('.blood-banks-section');
+    if (resultsSection) {
+      resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 100);
+}
+</script>

@@ -48,6 +48,7 @@ const indexRoutes = require('./routes/index');
 const authRoutes = require('./routes/auth');
 const donorRoutes = require('./routes/donor');
 const bloodRequestRoutes = require('./routes/bloodRequest');
+const bloodBanksRoutes = require('./routes/bloodBanks');
 const adminRoutes = require('./routes/admin');
 const profileRoutes = require('./routes/profile');
 
@@ -56,6 +57,7 @@ app.use('/', indexRoutes);
 app.use('/', authRoutes);
 app.use('/', donorRoutes);
 app.use('/', bloodRequestRoutes);
+app.use('/', bloodBanksRoutes);
 app.use('/', adminRoutes);
 app.use('/', profileRoutes);
 
